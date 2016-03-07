@@ -1,5 +1,9 @@
 package com.closevent.closevent;
 
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -13,7 +17,15 @@ import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.support.v4.app.Fragment;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.closevent.closevent.dummy.DummyContent;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,28 +40,6 @@ import java.util.List;
  * interface.
  */
 public class EventFragment extends Fragment implements AbsListView.OnItemClickListener {
-
-
-    private List<Event> genererEvents(){
-        List<Event> theEvents = new ArrayList<Event>();
-        theEvents.add(new Event("123","24 heure de l'insa","01/05/2016","03/05/2016","20 avenue Albert Einstein",false));
-        theEvents.add(new Event("456","24 heure de l'insa","01/05/2016","03/05/2016","20 avenue Albert Einstein",false));
-        theEvents.add(new Event("789","24 heure de l'insa","01/05/2016","03/05/2016","20 avenue Albert Einstein",false));
-        theEvents.add(new Event("741","24 heure de l'insa","01/05/2016","03/05/2016","20 avenue Albert Einstein",false));
-        theEvents.add(new Event("852","24 heure de l'insa","01/05/2016","03/05/2016","20 avenue Albert Einstein",false));
-        theEvents.add(new Event("963","24 heure de l'insa", "01/05/2016", "03/05/2016", "20 avenue Albert Einstein", false));
-        theEvents.add(new Event("159","24 heure de l'insa","01/05/2016","03/05/2016","20 avenue Albert Einstein",false));
-        theEvents.add(new Event("753","24 heure de l'insa","01/05/2016","03/05/2016","20 avenue Albert Einstein",false));
-        theEvents.add(new Event("483","24 heure de l'insa","01/05/2016","03/05/2016","20 avenue Albert Einstein",false));
-        theEvents.add(new Event("267","24 heure de l'insa","01/05/2016","03/05/2016","20 avenue Albert Einstein",false));
-        return theEvents;
-    }
-    private List<Event> genererEvents2(){
-        List<Event> theEvents = new ArrayList<Event>();
-        theEvents.add(new Event("123","24 heure de l'insa","01/05/2016","03/05/2016","20 avenue Albert Einstein",false));
-        theEvents.add(new Event("456","24 heure de l'insa","01/05/2016","03/05/2016","20 avenue Albert Einstein",false));
-        return theEvents;
-    }
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -99,12 +89,11 @@ public class EventFragment extends Fragment implements AbsListView.OnItemClickLi
             //mParam2 = getArguments().getString(ARG_PARAM2);
         }
         if(selectOnglet==2) {
-            List<Event> theEvents = genererEvents();
             // TODO: Change Adapter to display your content
-            mAdapter = new EventAdapter(this.getContext(), theEvents);
+            mAdapter = new EventAdapter(this.getContext(), MainActivity.allEvents);
         }
         else{
-            List<Event> theEvents = genererEvents2();
+            List<Event> theEvents = MainActivity.genererEvents2();
             // TODO: Change Adapter to display your content
             mAdapter = new EventAdapter(this.getContext(), theEvents);
         }
