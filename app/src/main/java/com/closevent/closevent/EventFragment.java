@@ -7,6 +7,7 @@ import com.android.volley.RequestQueue;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,6 +50,7 @@ public class EventFragment extends Fragment implements AbsListView.OnItemClickLi
 
     // TODO: Rename and change types of parameters
     private int selectOnglet;
+    public int cpt = 0;
     //private String mParam2;
 
     private OnFragmentInteractionListener mListener;
@@ -63,6 +65,59 @@ public class EventFragment extends Fragment implements AbsListView.OnItemClickLi
      * Views.
      */
     private ListAdapter mAdapter;
+    public List<Event> allEvents = new ArrayList<Event>();
+
+    public void genererEvents(){
+        System.out.println("ENTER OK\n\n");
+        Log.v("hello", "ENTER OK\n\n");
+        RequestQueue queue = Volley.newRequestQueue(this.getActivity());
+        String url = "http://rocky-mesa-88769.herokuapp.com/event";
+
+        // Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // Display the first 500 characters of the response string.
+                        String r = response;
+                        System.out.println(r);
+                        Log.v("hello", r);
+                        JSONObject jObject = null;
+                        try {
+                            jObject = new JSONObject(r);
+                            JSONArray jArray = jObject.getJSONArray("response");
+                            //allEvents = new ArrayList<Event>();
+                            for (int i=0; i < jArray.length(); ++i) {
+                                JSONObject ev = jArray.getJSONObject(i);
+                                String id = ev.getJSONObject("_id").getString("$oid");
+                                String name = ev.getString("name");
+                                String address = ev.getString("address");
+                                String dateDebut = Integer.toString(ev.getJSONObject("start_date").getInt("$date"));
+                                String dateFin = Integer.toString(ev.getJSONObject("end_date").getInt("$date"));
+                                boolean evPrivate = ev.getBoolean("private");
+                                allEvents.add(new Event(id, name, dateDebut, dateFin, address, evPrivate));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError e) {
+                        e.printStackTrace();
+                    }
+                });
+        // Add the request to the RequestQueue.
+        queue.add(stringRequest);
+    }
+    public List<Event> genererEvents2(){
+        List<Event> theEvents = new ArrayList<Event>();
+        cpt ++;
+        theEvents.add(new Event("123",Integer.toString(cpt),"01/05/2016","03/05/2016","20 avenue Albert Einstein",false));
+        theEvents.add(new Event("456","24 heure de l'insa","01/05/2016","03/05/2016","20 avenue Albert Einstein",false));
+        return theEvents;
+    }
 
     // TODO: Rename and change types of parameters
     public static EventFragment newInstance(int onglet) {
@@ -90,10 +145,11 @@ public class EventFragment extends Fragment implements AbsListView.OnItemClickLi
         }
         if(selectOnglet==2) {
             // TODO: Change Adapter to display your content
-            mAdapter = new EventAdapter(this.getContext(), MainActivity.allEvents);
+            genererEvents();
+            mAdapter = new EventAdapter(this.getContext(), allEvents);
         }
         else{
-            List<Event> theEvents = MainActivity.genererEvents2();
+            List<Event> theEvents = genererEvents2();
             // TODO: Change Adapter to display your content
             mAdapter = new EventAdapter(this.getContext(), theEvents);
         }
@@ -105,7 +161,7 @@ public class EventFragment extends Fragment implements AbsListView.OnItemClickLi
         View view = inflater.inflate(R.layout.events, container, false);
 
         // Set the adapter
-        mListView = (AbsListView) view.findViewById(R.id.listEvents);
+        mListView = (AbsListView)view.findViewById(R.id.listEvents);
         ((AdapterView<ListAdapter>) mListView).setAdapter(mAdapter);
 
         // Set OnItemClickListener so we can be notified on item clicks

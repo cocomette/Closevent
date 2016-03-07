@@ -1,5 +1,6 @@
 package com.closevent.closevent;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.design.widget.TabLayout;
@@ -13,6 +14,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -54,53 +56,7 @@ public class MainActivity extends AppCompatActivity implements EventFragment.OnF
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
-    public static List<Event> allEvents;
 
-    public void genererEvents(){
-        RequestQueue queue = Volley.newRequestQueue(this);
-        String url = R.string.server_base_url + "event";
-
-        // Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        // Display the first 500 characters of the response string.
-                        JSONObject jObject = null;
-                        try {
-                            jObject = new JSONObject(response.substring(0,500));
-                            JSONArray jArray = jObject.getJSONArray("response");
-                            allEvents = new ArrayList<Event>();
-                            for (int i=0; i < jArray.length(); ++i) {
-                                JSONObject ev = jArray.getJSONObject(i);
-                                String id = ev.getJSONObject("_id").getString("$oid");
-                                String name = ev.getString("name");
-                                String address = ev.getString("address");
-                                String dateDebut = Integer.toString(ev.getJSONObject("start_date").getInt("$date"));
-                                String dateFin = Integer.toString(ev.getJSONObject("end_date").getInt("$date"));
-                                boolean evPrivate = ev.getBoolean("private");
-                                allEvents.add(new Event(id, name, dateDebut, dateFin, address, evPrivate));
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError e) {
-                        e.printStackTrace();
-                    }
-                });
-        // Add the request to the RequestQueue.
-        queue.add(stringRequest);
-    }
-    public static List<Event> genererEvents2(){
-        List<Event> theEvents = new ArrayList<Event>();
-        theEvents.add(new Event("123","24 heure de l'insa","01/05/2016","03/05/2016","20 avenue Albert Einstein",false));
-        theEvents.add(new Event("456","24 heure de l'insa","01/05/2016","03/05/2016","20 avenue Albert Einstein",false));
-        return theEvents;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -165,9 +121,7 @@ public class MainActivity extends AppCompatActivity implements EventFragment.OnF
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            if( position == 0 ) {
-                genererEvents();
-            }
+
             return EventFragment.newInstance(position + 1);
         }
 
