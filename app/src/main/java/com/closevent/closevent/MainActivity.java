@@ -1,5 +1,6 @@
 package com.closevent.closevent;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -77,8 +78,8 @@ public class MainActivity extends AppCompatActivity implements EventFragment.OnF
 
         switch (item.getItemId()) {
             case R.id.action_add:
-                // Here we might start a background refresh task
-                return true;
+                Intent intent = new Intent().setClass(this, CreateActivity.class);
+                startActivity(intent);
             case R.id.action_settings:
                 return true;
         }

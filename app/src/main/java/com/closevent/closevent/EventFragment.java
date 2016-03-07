@@ -54,11 +54,11 @@ public class EventFragment extends Fragment implements AbsListView.OnItemClickLi
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_ONGLET = "onglet";
     private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
-    private int mParam1;
+    private int selectOnglet;
     //private String mParam2;
 
     private OnFragmentInteractionListener mListener;
@@ -75,10 +75,10 @@ public class EventFragment extends Fragment implements AbsListView.OnItemClickLi
     private ListAdapter mAdapter;
 
     // TODO: Rename and change types of parameters
-    public static EventFragment newInstance(int param1) {
+    public static EventFragment newInstance(int onglet) {
         EventFragment fragment = new EventFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_PARAM1, param1);
+        args.putInt(ARG_ONGLET, onglet);
         fragment.setArguments(args);
         return fragment;
     }
@@ -95,10 +95,10 @@ public class EventFragment extends Fragment implements AbsListView.OnItemClickLi
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            mParam1 = getArguments().getInt(ARG_PARAM1);
+            selectOnglet = getArguments().getInt(ARG_ONGLET);
             //mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        if(mParam1==2) {
+        if(selectOnglet==2) {
             List<Event> theEvents = genererEvents();
             // TODO: Change Adapter to display your content
             mAdapter = new EventAdapter(this.getContext(), theEvents);
