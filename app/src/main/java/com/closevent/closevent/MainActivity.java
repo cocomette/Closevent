@@ -76,8 +76,21 @@ public class MainActivity extends AppCompatActivity implements EventFragment.OnF
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        final TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
+        tabLayout.setOnTabSelectedListener(
+                new TabLayout.ViewPagerOnTabSelectedListener(mViewPager) {
+                    @Override
+                    public void onTabSelected(TabLayout.Tab tab) {
+                        super.onTabSelected(tab);
+                        System.out.println("TAB SELECTED");
+                        String tag = mSectionsPagerAdapter.getFragmentTag(
+                                mViewPager.getId(), tabLayout.getSelectedTabPosition());
+                        EventFragment eventFrag = (EventFragment)
+                                getSupportFragmentManager().findFragmentByTag(tag);
+                        eventFrag.updateEvents();
+                    }
+                });
       
     }
 
@@ -120,9 +133,13 @@ public class MainActivity extends AppCompatActivity implements EventFragment.OnF
             super(fm);
         }
 
+        private String getFragmentTag(int viewPagerId, int fragmentPosition)
+        {
+            return "android:switcher:" + viewPagerId + ":" + fragmentPosition;
+        }
+
         @Override
         public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
             return EventFragment.newInstance(position + 1);
         }
 
