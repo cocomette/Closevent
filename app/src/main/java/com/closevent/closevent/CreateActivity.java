@@ -21,6 +21,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.closevent.closevent.service.Event;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;

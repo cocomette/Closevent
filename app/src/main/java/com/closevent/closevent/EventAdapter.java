@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.closevent.closevent.service.Event;
+
 import java.util.List;
 
 /**
