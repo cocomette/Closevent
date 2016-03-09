@@ -189,18 +189,6 @@ public class EventFragment extends Fragment implements AbsListView.OnItemClickLi
         }
     }
 
-    /**
-     * The default content for this Fragment has a TextView that is shown when
-     * the list is empty. If you would like to change the text, call this method
-     * to supply the text it should use.
-     */
-    public void setEmptyText(CharSequence emptyText) {
-        View emptyView = mListView.getEmptyView();
-
-        if (emptyView instanceof TextView) {
-            ((TextView) emptyView).setText(emptyText);
-        }
-    }
 
     /**
      * This interface must be implemented by activities that contain this

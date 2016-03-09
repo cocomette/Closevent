@@ -22,6 +22,15 @@ public class Event {
         this.evPrivate = evPrivate;
     }
 
+    public Event(){
+        this.id= "undefined";
+        this.name = "undefined";
+        this.dateDebut = "undefined";
+        this.dateFin = "undefined";
+        this.address = "undefined";
+        this.evPrivate = true;
+    }
+
     public String getId() {
         return id;
     }
