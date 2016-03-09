@@ -29,12 +29,11 @@ public class LoginActivity extends AppCompatActivity{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.wait_for_log);
         FacebookSdk.sdkInitialize(getApplicationContext());
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://rocky-mesa-88769.herokuapp.com/")
                 .build();
-        api = retrofit.create(CloseventAPI.class);
+        //api = retrofit.create(CloseventAPI.class);
         try{
             Thread.sleep(200);
         }
@@ -44,6 +43,7 @@ public class LoginActivity extends AppCompatActivity{
             System.out.println("OOOOOOKKKKKKKKKKK");
             Intent intent = new Intent().setClass(this, MainActivity.class);
             startActivity(intent);
+            this.finish();
         }
         setContentView(R.layout.login_activity);
         callbackManager = CallbackManager.Factory.create();
@@ -56,19 +56,24 @@ public class LoginActivity extends AppCompatActivity{
                 String name = "Henri HANNETEL";
                 String picture = "";
                 User user = new User(id, name, picture);
-                api.createUser(user);
+                //api.createUser(user);
 
                 // Launch main activity
+                System.out.println("on success");
                 Intent intent = new Intent(getApplicationContext(),MainActivity.class);
                 startActivity(intent);
+                System.out.println("on success");
             }
 
             @Override
             public void onCancel() {
+                System.out.println("on cancel");
+
             }
 
             @Override
             public void onError(FacebookException e) {
+                System.out.println("on error");
             }
 
 
@@ -80,6 +85,7 @@ public class LoginActivity extends AppCompatActivity{
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
+        this.finish();
     }
     public boolean isLoggedIn() {
         AccessToken accessToken = AccessToken.getCurrentAccessToken();

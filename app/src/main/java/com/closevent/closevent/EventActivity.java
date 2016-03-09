@@ -1,5 +1,6 @@
 package com.closevent.closevent;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -91,11 +92,9 @@ public class EventActivity extends AppCompatActivity implements TweetFragment.On
 
 
         switch (item.getItemId()) {
-            case R.id.action_add:
-                // Here we might start a background refresh task
-                return true;
-            case R.id.action_settings:
-                return true;
+            case R.id.action_logout:
+                Intent intent2 = new Intent().setClass(this, LoginActivity.class);
+                startActivity(intent2);
         }
 
         return super.onOptionsItemSelected(item);
