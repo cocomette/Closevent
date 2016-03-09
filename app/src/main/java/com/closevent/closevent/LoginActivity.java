@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import com.closevent.closevent.service.CloseventAPI;
+import com.closevent.closevent.service.User;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -12,19 +14,27 @@ import com.facebook.FacebookSdk;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
+import retrofit2.Retrofit;
+
 /**
  * Created by Côme on 05/03/2016.
  */
 public class LoginActivity extends AppCompatActivity{
     private CallbackManager callbackManager;
-    public String logId;
-    public String token;
+    public CloseventAPI api;
+
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.wait_for_log);
         FacebookSdk.sdkInitialize(getApplicationContext());
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://rocky-mesa-88769.herokuapp.com/")
+                .build();
+        api = retrofit.create(CloseventAPI.class);
         try{
             Thread.sleep(200);
         }
@@ -42,11 +52,15 @@ public class LoginActivity extends AppCompatActivity{
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                logId = loginResult.getAccessToken().getUserId();
-                token = loginResult.getAccessToken().getToken();
+                String id = loginResult.getAccessToken().getToken();
+                String name = "Henri HANNETEL";
+                String picture = "";
+                User user = new User(id, name, picture);
+                api.createUser(user);
+
+                // Launch main activity
                 Intent intent = new Intent(getApplicationContext(),MainActivity.class);
                 startActivity(intent);
-
             }
 
             @Override

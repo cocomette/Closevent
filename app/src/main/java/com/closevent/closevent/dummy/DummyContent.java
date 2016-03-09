@@ -1,8 +1,6 @@
 package com.closevent.closevent.dummy;
 
-import android.widget.ListView;
-
-import com.closevent.closevent.Event;
+import com.closevent.closevent.service.Event;
 
 import java.util.ArrayList;
 import java.util.HashMap;

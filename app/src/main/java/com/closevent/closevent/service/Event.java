@@ -1,4 +1,4 @@
-package com.closevent.closevent;
+package com.closevent.closevent.service;
 
 import java.util.Date;
 
