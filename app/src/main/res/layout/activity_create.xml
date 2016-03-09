@@ -14,8 +14,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Nom de l&apos;événement"
-        android:layout_marginTop="5dp"
+        android:text="Event name"
+        android:layout_marginTop="20dp"
         android:id="@+id/textNameEvent"
         android:textColor="@color/colorTextField"/>
 
@@ -28,43 +28,104 @@
         android:textStyle="italic"
         android:textColor="@color/colorEditText"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Date de début"
-        android:id="@+id/textDateBegin"
-        android:layout_marginTop="10dp"
-        android:textColor="@color/colorTextField"/>
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="date"
-        android:ems="10"
-        android:id="@+id/editDateBegin"
-        android:layout_marginTop="2dp"
-        android:textStyle="italic"
-        android:textColor="@color/colorEditText"/>
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Starting date"
+            android:id="@+id/textDateBegin"
+            android:layout_marginTop="30dp"
+            android:paddingRight="55dp"
+            android:textColor="@color/colorTextField"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Date de fin"
-        android:id="@+id/textDateEnd"
-        android:layout_marginTop="10dp"
-        android:textColor="@color/colorTextField"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Starting hour"
+            android:id="@+id/textHourBegin"
+            android:layout_marginTop="30dp"
+            android:layout_alignBottom="@+id/textDateBegin"
+            android:layout_toRightOf="@+id/textDateBegin"
+            android:layout_marginLeft="30dp"
+            android:textColor="@color/colorTextField"/>
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="date"
-        android:ems="10"
-        android:id="@+id/editDateEnd"
-        android:layout_marginTop="2dp"
-        android:textStyle="italic"
-        android:textColor="@color/colorEditText"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="date"
+            android:ems="10"
+            android:id="@+id/editDateBegin"
+            android:layout_below="@+id/textDateBegin"
+            android:layout_alignRight="@+id/textDateBegin"
+            android:layout_marginTop="2dp"
+            android:textStyle="italic"
+            android:textColor="@color/colorEditText" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="date"
+            android:ems="10"
+            android:id="@+id/editHourBegin"
+            android:layout_below="@+id/textHourBegin"
+            android:layout_alignLeft="@+id/textHourBegin"
+            android:layout_marginTop="2dp"
+            android:textStyle="italic"
+            android:textColor="@color/colorEditText" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Ending date"
+            android:id="@+id/textDateEnd"
+            android:layout_below="@+id/editDateBegin"
+            android:layout_marginTop="30dp"
+            android:textColor="@color/colorTextField"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Ending hour"
+            android:id="@+id/textHourEnd"
+            android:layout_marginTop="30dp"
+            android:layout_alignBottom="@+id/textDateEnd"
+            android:layout_alignLeft="@+id/textHourBegin"
+            android:textColor="@color/colorTextField"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="date"
+            android:ems="10"
+            android:id="@+id/editDateEnd"
+            android:layout_below="@+id/textDateEnd"
+            android:layout_alignRight="@+id/editDateBegin"
+            android:layout_marginTop="2dp"
+            android:textStyle="italic"
+            android:textColor="@color/colorEditText" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="date"
+            android:ems="10"
+            android:id="@+id/editHourEnd"
+            android:layout_below="@+id/textDateEnd"
+            android:layout_toRightOf="@+id/editDateEnd"
+            android:layout_alignLeft="@+id/textHourBegin"
+            android:layout_marginTop="2dp"
+            android:textStyle="italic"
+            android:textColor="@color/colorEditText" />
+
+    </RelativeLayout>
+
 
     <TextView
         android:layout_width="wrap_content"
@@ -72,7 +133,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Lieu"
         android:id="@+id/textPlace"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="30dp"
         android:textColor="@color/colorTextField"/>
 
     <EditText
@@ -93,7 +154,7 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Evénement privé"
             android:id="@+id/textPrivate"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="30dp"
             android:textColor="@color/colorTextField"/>
 
         <Switch
@@ -103,23 +164,6 @@
             android:layout_alignBottom="@+id/textPrivate"
             android:layout_alignParentRight="true"/>
     </RelativeLayout>
-
-
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_gravity="bottom">
-        <Button
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:paddingRight="0dp"
-            android:paddingLeft="0dp"
-            android:text="Create Event"
-            android:id="@+id/sendButton"
-            android:layout_alignParentBottom="true"/>
-
-    </RelativeLayout>
-
 
 
 </LinearLayout>

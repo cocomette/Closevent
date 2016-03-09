@@ -1,6 +1,7 @@
 package com.closevent.closevent;
 
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -18,6 +19,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -33,8 +35,22 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
     private SimpleDateFormat dateFormatter;
     private DatePickerDialog fromDatePickerDialog;
     private DatePickerDialog toDatePickerDialog;
+    private TimePickerDialog fromHourPickerDialog;
+    private TimePickerDialog toHourPickerDialog;
     private EditText EditDateBegin;
     private EditText EditDateEnd;
+    private EditText EditHourBegin;
+    private EditText EditHourEnd;
+    private int year1;
+    private int month1;
+    private int day1;
+    private int hour1;
+    private int minute1;
+    private int year2;
+    private int month2;
+    private int day2;
+    private int hour2;
+    private int minute2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,22 +60,31 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
 
         EditDateBegin = (EditText) findViewById(R.id.editDateBegin);
         EditDateEnd = (EditText) findViewById(R.id.editDateEnd);
+        EditHourBegin = (EditText) findViewById(R.id.editHourBegin);
+        EditHourEnd = (EditText) findViewById(R.id.editHourEnd);
 
         dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.FRANCE);
 
         EditDateBegin.setInputType(InputType.TYPE_NULL);
         EditDateEnd.setInputType(InputType.TYPE_NULL);
+        EditHourBegin.setInputType(InputType.TYPE_NULL);
+        EditHourEnd.setInputType(InputType.TYPE_NULL);
 
         EditDateBegin.setOnClickListener(this);
         EditDateEnd.setOnClickListener(this);
+        EditHourBegin.setOnClickListener(this);
+        EditHourEnd.setOnClickListener(this);
 
-        Calendar newCalendar = Calendar.getInstance();
+        final Calendar newCalendar = Calendar.getInstance();
         fromDatePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
 
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 Calendar newDate = Calendar.getInstance();
                 newDate.set(year, monthOfYear, dayOfMonth);
                 EditDateBegin.setText(dateFormatter.format(newDate.getTime()));
+                year1=year;
+                month1=monthOfYear;
+                day1=dayOfMonth;
             }
 
         },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
@@ -70,15 +95,53 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
                 Calendar newDate = Calendar.getInstance();
                 newDate.set(year, monthOfYear, dayOfMonth);
                 EditDateEnd.setText(dateFormatter.format(newDate.getTime()));
+                year2=year;
+                month2=monthOfYear;
+                day2=dayOfMonth;
             }
 
         },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
 
+        fromHourPickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+
+            public void onTimeSet(TimePicker view, int hour, int minute) {
+                EditHourBegin.setText(hour+":"+minute);
+                hour1=hour;
+                minute1=minute;
+            }
+
+        },newCalendar.HOUR_OF_DAY, newCalendar.MINUTE, true);
+
+        toHourPickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+
+            public void onTimeSet(TimePicker view, int hour, int minute) {
+                EditHourEnd.setText(hour+":"+minute);
+                hour2=hour;
+                minute2=minute;
+            }
+
+        },newCalendar.HOUR_OF_DAY, newCalendar.MINUTE, true);
 
 
-        final Button button = (Button) findViewById(R.id.sendButton);
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_create, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+
+
+        switch (item.getItemId()) {
+            case R.id.action_validate:
                 // Perform action on click
                 EditText EditName = (EditText) findViewById(R.id.editNameEvent);
                 EditText EditLieu = (EditText) findViewById(R.id.editPlace);
@@ -105,30 +168,54 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
                 else{
                     EditLieu.setError(null);
                 }
-                if(EditDateBegin.getText().length()<=0){
-                    EditDateBegin.setError("You must fill this field");
-                    completed = false;
-                }
-                else{
-                    EditDateBegin.setError(null);
-                }
-                if(EditDateEnd.getText().length()<=0){
-                    EditDateEnd.setError("You must fill this field");
-                    completed = false;
-                }
-                else{
-                    EditDateEnd.setError(null);
-                }
+
                 try {
-                    Date d1 = dateFormatter.parse(EditDateBegin.getText().toString());
-                    Date d2 = dateFormatter.parse(EditDateEnd.getText().toString());
-                    if(d1.after(d2)){
+
+                    Calendar newDate1 = Calendar.getInstance();
+                    newDate1.set(year1,month1,day1,hour1,minute1);
+
+                    Calendar newDate2 = Calendar.getInstance();
+                    newDate2.set(year2,month2,day2,hour2,minute2);
+
+                    Date d1 = newDate1.getTime();
+                    Date d2 = newDate2.getTime();
+
+
+                    if(d1.after(d2) && EditDateBegin.getText().length()>0 && EditDateEnd.getText().length()>0 && EditHourBegin.getText().length()>0 && EditHourEnd.getText().length()>0){
                         EditDateEnd.setText("");
-                        EditDateEnd.setError("Pick a greater date than above");
+                        EditHourEnd.setText("");
+                        EditHourEnd.setError("Pick a greater date than above");
                         completed = false;
                     }
                     else{
-                        EditDateEnd.setError(null);
+                        if(EditDateBegin.getText().length()<=0){
+                            EditDateBegin.setError("You must fill this field");
+                            completed = false;
+                        }
+                        else{
+                            EditDateBegin.setError(null);
+                        }
+                        if(EditDateEnd.getText().length()<=0){
+                            EditDateEnd.setError("You must fill this field");
+                            completed = false;
+                        }
+                        else{
+                            EditDateEnd.setError(null);
+                        }
+                        if(EditHourBegin.getText().length()<=0){
+                            EditHourBegin.setError("You must fill this field");
+                            completed = false;
+                        }
+                        else{
+                            EditHourBegin.setError(null);
+                        }
+                        if(EditHourEnd.getText().length()<=0){
+                            EditHourEnd.setError("You must fill this field");
+                            completed = false;
+                        }
+                        else{
+                            EditHourEnd.setError(null);
+                        }
                     }
                 }
                 catch (Exception e){
@@ -143,28 +230,7 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
                     eventCreated.setEvPrivate(SwitchEvPrivate.isChecked());
                 }
 
-            }
-        });
-    }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_reduced, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-
-
-        switch (item.getItemId()) {
-            case R.id.action_settings:
-                return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -175,7 +241,13 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
             fromDatePickerDialog.show();
         } else if(view == EditDateEnd) {
             toDatePickerDialog.show();
+        } else if(view == EditHourBegin){
+            fromHourPickerDialog.show();
+        } else if(view == EditHourEnd){
+            toHourPickerDialog.show();
         }
+
+
     }
 
 }
