@@ -1,12 +1,8 @@
 package com.closevent.closevent.service;
 
-import com.closevent.closevent.service.Event;
-
-import java.util.List;
-
+import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.PUT;
-import retrofit2.Call;
 
 /**
  * Created by Henri on 08/03/2016.
@@ -14,5 +10,5 @@ import retrofit2.Call;
 public interface CloseventAPI {
 
     @PUT("users")
-    Call<ResPut> createUser(@Body User user);
+    Call<ResUser> createUser(@Body User user);
 }

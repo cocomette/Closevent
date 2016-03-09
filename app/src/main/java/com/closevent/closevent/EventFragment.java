@@ -104,8 +104,8 @@ public class EventFragment extends Fragment implements AbsListView.OnItemClickLi
     }
 
     public void getMyEvents(){
-        mAdapter.add(new Event("123","24 heures de l'insa","01/05/2016","03/05/2016","20 avenue Albert Einstein",false));
-        mAdapter.add(new Event("456","24 heure de l'insa","01/05/2016","03/05/2016","20 avenue Albert Einstein",false));
+        mAdapter.add(new Event("123", "24 heures de l'insa", "01/05/2016", "03/05/2016", "20 avenue Albert Einstein", false));
+        mAdapter.add(new Event("456", "24 heure de l'insa", "01/05/2016", "03/05/2016", "20 avenue Albert Einstein", false));
     }
 
     // TODO: Rename and change types of parameters
@@ -132,10 +132,12 @@ public class EventFragment extends Fragment implements AbsListView.OnItemClickLi
             getMyEvents();
         }
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mAdapter = new EventAdapter(this.getContext(), new ArrayList<Event>());
+        mAdapter.notifyDataSetChanged();
         if (getArguments() != null) {
             selectOnglet = getArguments().getInt(ARG_ONGLET);
         }

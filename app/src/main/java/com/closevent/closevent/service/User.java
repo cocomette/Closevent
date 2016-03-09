@@ -15,6 +15,3 @@ public class User {
     }
 }
 
-class ResPut {
-    public String user_id;
-}
