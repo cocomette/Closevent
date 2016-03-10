@@ -3,10 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.closevent.closevent.EventActivity" >
 
-
-    <!-- Settings button -->
-    <item android:id="@+id/action_settings"
-        android:icon="@drawable/ic_setting"
+    <!-- Log out button -->
+    <item android:id="@+id/action_logout"
+        android:icon="@drawable/ic_deconexion"
         android:title="@string/action_settings"
         android:orderInCategory="100"
         app:showAsAction="ifRoom" />

@@ -38,6 +38,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Retrofit;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
+
 
 public class MainActivity extends AppCompatActivity implements EventFragment.OnFragmentInteractionListener {
 
@@ -64,6 +67,8 @@ public class MainActivity extends AppCompatActivity implements EventFragment.OnF
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        System.out.println("Main Activity");
+
         setContentView(R.layout.activity_main);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -113,7 +118,12 @@ public class MainActivity extends AppCompatActivity implements EventFragment.OnF
             case R.id.action_add:
                 Intent intent = new Intent().setClass(this, CreateActivity.class);
                 startActivity(intent);
-            case R.id.action_settings:
+                return true;
+            case R.id.action_logout:
+                LoginManager.getInstance().logOut();
+                Intent intent2 = new Intent().setClass(this, LoginActivity.class);
+                startActivity(intent2);
+                this.finish();
                 return true;
         }
 

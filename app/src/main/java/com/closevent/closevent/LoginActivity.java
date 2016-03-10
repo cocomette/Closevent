@@ -22,6 +22,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.HEAD;
 
 /**
  * Created by Côme on 05/03/2016.
@@ -34,7 +35,6 @@ public class LoginActivity extends AppCompatActivity{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.wait_for_log);
         FacebookSdk.sdkInitialize(getApplicationContext());
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://rocky-mesa-88769.herokuapp.com/")
@@ -50,6 +50,7 @@ public class LoginActivity extends AppCompatActivity{
             System.out.println("OOOOOOKKKKKKKKKKK");
             Intent intent = new Intent().setClass(this, MainActivity.class);
             startActivity(intent);
+            this.finish();
         }
         setContentView(R.layout.login_activity);
         callbackManager = CallbackManager.Factory.create();
@@ -91,10 +92,12 @@ public class LoginActivity extends AppCompatActivity{
 
             @Override
             public void onCancel() {
+
             }
 
             @Override
             public void onError(FacebookException e) {
+                System.out.println("on error");
             }
 
 
@@ -106,6 +109,7 @@ public class LoginActivity extends AppCompatActivity{
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
+        this.finish();
     }
     public boolean isLoggedIn() {
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
