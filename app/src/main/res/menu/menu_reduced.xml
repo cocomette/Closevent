@@ -6,7 +6,7 @@
     <!-- Log out button -->
     <item android:id="@+id/action_logout"
         android:icon="@drawable/ic_deconexion"
-        android:title="@string/action_settings"
+        android:title="@string/action_logout"
         android:orderInCategory="100"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="never" />
 </menu>
