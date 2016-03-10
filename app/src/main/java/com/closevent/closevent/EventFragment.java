@@ -150,7 +150,6 @@ public class EventFragment extends Fragment implements AbsListView.OnItemClickLi
         View view = inflater.inflate(R.layout.events, container, false);
 
         // Set the adapter
-        updateEvents();
         mListView = (AbsListView)view.findViewById(R.id.listEvents);
 
         mListView.setAdapter(mAdapter);

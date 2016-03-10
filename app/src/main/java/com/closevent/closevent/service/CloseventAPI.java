@@ -11,4 +11,6 @@ public interface CloseventAPI {
 
     @PUT("users")
     Call<ResUser> createUser(@Body User user);
+
+    @
 }
