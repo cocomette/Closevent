@@ -112,7 +112,7 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
                 minute1=minute;
             }
 
-        },newCalendar.HOUR_OF_DAY, newCalendar.MINUTE, true);
+        },newCalendar.get(Calendar.HOUR_OF_DAY), newCalendar.get(Calendar.MINUTE), true);
 
         toHourPickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
 
@@ -122,7 +122,7 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
                 minute2=minute;
             }
 
-        },newCalendar.HOUR_OF_DAY, newCalendar.MINUTE, true);
+        },newCalendar.get(Calendar.HOUR_OF_DAY), newCalendar.get(Calendar.MINUTE), true);
 
 
     }
@@ -184,8 +184,6 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
 
 
                     if(d1.after(d2) && EditDateBegin.getText().length()>0 && EditDateEnd.getText().length()>0 && EditHourBegin.getText().length()>0 && EditHourEnd.getText().length()>0){
-                        EditDateEnd.setText("");
-                        EditHourEnd.setText("");
                         EditHourEnd.setError("Pick a greater date than above");
                         completed = false;
                     }
