@@ -14,31 +14,10 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.closevent.closevent.service.CloseventAPI;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import retrofit2.Retrofit;
-import com.facebook.FacebookSdk;
+import com.closevent.closevent.service.Event;
 import com.facebook.login.LoginManager;
 
 
@@ -89,11 +68,12 @@ public class MainActivity extends AppCompatActivity implements EventFragment.OnF
                     public void onTabSelected(TabLayout.Tab tab) {
                         super.onTabSelected(tab);
                         System.out.println("TAB SELECTED");
-                        String tag = mSectionsPagerAdapter.getFragmentTag(
-                                mViewPager.getId(), tabLayout.getSelectedTabPosition());
-                        EventFragment eventFrag = (EventFragment)
-                                getSupportFragmentManager().findFragmentByTag(tag);
-                        eventFrag.updateEvents();
+                        int pos = tabLayout.getSelectedTabPosition();
+                        if( pos == 0 ) {
+                            Event.updateUserEvents(LoginActivity.fbToken.getUserId());
+                        } else {
+                            Event.updateAllEvents();
+                        }
                     }
                 });
       

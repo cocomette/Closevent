@@ -33,11 +33,6 @@ public class DummyContent {
      */
     public static Map<String, Event> ITEM_MAP = new HashMap<String, Event>();
 
-    static {
-        // Add 3 sample items.
-        addItem(new Event("123","24 heure de l'insa","01/05/2016","03/05/2016","20 avenue Albert Einstein",false));
-        addItem(new Event("159","24 heure de l'insa","01/05/2016","03/05/2016","20 avenue Albert Einstein",false));
-    }
 
     private static void addItem(Event item) {
         ITEMS1.add(item);

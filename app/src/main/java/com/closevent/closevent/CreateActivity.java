@@ -225,8 +225,9 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
                 if(completed==true){
                     eventCreated.setName(EditName.getText().toString());
                     eventCreated.setAddress(EditLieu.getText().toString());
-                    eventCreated.setDateDebut(EditDateBegin.getText().toString());
-                    eventCreated.setDateFin(EditDateEnd.getText().toString());
+                    System.out.println(EditDateBegin.getText().toString());
+                    //eventCreated.setDateDebut(EditDateBegin.getText().toString());
+                    //eventCreated.setDateFin(EditDateEnd.getText().toString());
                     eventCreated.setEvPrivate(SwitchEvPrivate.isChecked());
                 }
 

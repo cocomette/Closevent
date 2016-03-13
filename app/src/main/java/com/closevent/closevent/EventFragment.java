@@ -60,53 +60,7 @@ public class EventFragment extends Fragment implements AbsListView.OnItemClickLi
      * The Adapter which will be used to populate the ListView/GridView with
      * Views.
      */
-    private EventAdapter mAdapter;
-
-    public void getAllEvents(){
-        RequestQueue queue = Volley.newRequestQueue(this.getActivity());
-        // TODO: R.Strings ...
-        String url = "http://rocky-mesa-88769.herokuapp.com/event";
-        //String url = new StringBuilder(R.string.server_base_url).append("event").toString();
-
-        // Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        JSONObject jObject = null;
-                        try {
-                            jObject = new JSONObject(response);
-                            JSONArray jArray = jObject.getJSONArray("response");
-                            mAdapter.clear();
-                            for (int i=0; i < jArray.length(); ++i) {
-                                JSONObject ev = jArray.getJSONObject(i);
-                                String id = ev.getJSONObject("_id").getString("$oid");
-                                String name = ev.getString("name");
-                                String address = ev.getString("address");
-                                String dateDebut = Integer.toString(ev.getJSONObject("start_date").getInt("$date"));
-                                String dateFin = Integer.toString(ev.getJSONObject("end_date").getInt("$date"));
-                                boolean evPrivate = ev.getBoolean("private");
-                                mAdapter.add(new Event(id, name, dateDebut, dateFin, address, evPrivate));
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError e) {
-                        e.printStackTrace();
-                    }
-                });
-        // Add the request to the RequestQueue.
-        queue.add(stringRequest);
-    }
-
-    public void getMyEvents(){
-        mAdapter.add(new Event("123", "24 heures de l'insa", "01/05/2016", "03/05/2016", "20 avenue Albert Einstein", false));
-        mAdapter.add(new Event("456", "24 heure de l'insa", "01/05/2016", "03/05/2016", "20 avenue Albert Einstein", false));
-    }
+    public static EventAdapter mAdapter;
 
     // TODO: Rename and change types of parameters
     public static EventFragment newInstance(int onglet) {
@@ -124,15 +78,6 @@ public class EventFragment extends Fragment implements AbsListView.OnItemClickLi
     public EventFragment() {
     }
 
-    public void updateEvents() {
-        if(selectOnglet==2) {
-            getAllEvents();
-        }
-        else{
-            getMyEvents();
-        }
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -141,7 +86,7 @@ public class EventFragment extends Fragment implements AbsListView.OnItemClickLi
         if (getArguments() != null) {
             selectOnglet = getArguments().getInt(ARG_ONGLET);
         }
-        updateEvents();
+        Event.updateUserEvents(LoginActivity.fbToken.getUserId());
     }
 
     @Override
@@ -150,7 +95,6 @@ public class EventFragment extends Fragment implements AbsListView.OnItemClickLi
         View view = inflater.inflate(R.layout.events, container, false);
 
         // Set the adapter
-        updateEvents();
         mListView = (AbsListView)view.findViewById(R.id.listEvents);
 
         mListView.setAdapter(mAdapter);
