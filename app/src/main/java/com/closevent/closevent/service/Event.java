@@ -78,10 +78,12 @@ public class Event {
             @Override
             public void onResponse(Call<List<Event>> req, Response<List<Event>> response) {
                 try {
-                    if( ! response.body().isEmpty() && EventFragment.mAdapter != null ) {
+                    if(response.body() != null) {
                         EventFragment.mAdapter.clear();
-                        for( Event e:response.body() ) {
-                            EventFragment.mAdapter.add(e);
+                        if( ! response.body().isEmpty() && EventFragment.mAdapter != null ) {
+                            for( Event e:response.body() ) {
+                                EventFragment.mAdapter.add(e);
+                            }
                         }
                     }
                 } catch (Exception e) {

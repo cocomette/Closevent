@@ -35,14 +35,16 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
 
     private Event eventCreated;
     private SimpleDateFormat dateFormatter;
+    private SimpleDateFormat timeFormatter;
     private DatePickerDialog fromDatePickerDialog;
     private DatePickerDialog toDatePickerDialog;
     private TimePickerDialog fromHourPickerDialog;
     private TimePickerDialog toHourPickerDialog;
-    private EditText EditDateBegin;
-    private EditText EditDateEnd;
-    private EditText EditHourBegin;
-    private EditText EditHourEnd;
+    private EditText editDateBegin;
+    private EditText editDateEnd;
+    private EditText editHourBegin;
+    private EditText editHourEnd;
+    private Switch switchPrivate;
     private int year1;
     private int month1;
     private int day1;
@@ -54,28 +56,43 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
     private int hour2;
     private int minute2;
 
+    private Date getEndDate(Date startDate) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(startDate);
+        c.add(Calendar.DATE, 1);
+        return c.getTime();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create);
+        Date now = new Date();
         eventCreated = new Event();
 
-        EditDateBegin = (EditText) findViewById(R.id.editDateBegin);
-        EditDateEnd = (EditText) findViewById(R.id.editDateEnd);
-        EditHourBegin = (EditText) findViewById(R.id.editHourBegin);
-        EditHourEnd = (EditText) findViewById(R.id.editHourEnd);
+        editDateBegin = (EditText) findViewById(R.id.editStartDate);
+        editDateEnd = (EditText) findViewById(R.id.editDateEnd);
+        editHourBegin = (EditText) findViewById(R.id.editStartTime);
+        editHourEnd = (EditText) findViewById(R.id.editEndTime);
+        switchPrivate = (Switch) findViewById(R.id.switchPrivate);
 
-        dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.FRANCE);
+        dateFormatter = new SimpleDateFormat("dd MMMM yyyy", Locale.FRANCE);
+        timeFormatter = new SimpleDateFormat("HH 'h' mm", Locale.FRANCE);
+        editDateBegin.setHint(dateFormatter.format(now));
+        editDateEnd.setHint(dateFormatter.format(this.getEndDate(now)));
+        editHourBegin.setHint(timeFormatter.format(now));
+        editHourEnd.setHint(timeFormatter.format(now));
 
-        EditDateBegin.setInputType(InputType.TYPE_NULL);
-        EditDateEnd.setInputType(InputType.TYPE_NULL);
-        EditHourBegin.setInputType(InputType.TYPE_NULL);
-        EditHourEnd.setInputType(InputType.TYPE_NULL);
+        editDateBegin.setInputType(InputType.TYPE_NULL);
+        editDateEnd.setInputType(InputType.TYPE_NULL);
+        editHourBegin.setInputType(InputType.TYPE_NULL);
+        editHourEnd.setInputType(InputType.TYPE_NULL);
 
-        EditDateBegin.setOnClickListener(this);
-        EditDateEnd.setOnClickListener(this);
-        EditHourBegin.setOnClickListener(this);
-        EditHourEnd.setOnClickListener(this);
+        editDateBegin.setOnClickListener(this);
+        editDateEnd.setOnClickListener(this);
+        editHourBegin.setOnClickListener(this);
+        editHourEnd.setOnClickListener(this);
+        switchPrivate.setOnClickListener(this);
 
         final Calendar newCalendar = Calendar.getInstance();
         fromDatePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
@@ -83,7 +100,7 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 Calendar newDate = Calendar.getInstance();
                 newDate.set(year, monthOfYear, dayOfMonth);
-                EditDateBegin.setText(dateFormatter.format(newDate.getTime()));
+                editDateBegin.setText(dateFormatter.format(newDate.getTime()));
                 year1=year;
                 month1=monthOfYear;
                 day1=dayOfMonth;
@@ -96,7 +113,7 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 Calendar newDate = Calendar.getInstance();
                 newDate.set(year, monthOfYear, dayOfMonth);
-                EditDateEnd.setText(dateFormatter.format(newDate.getTime()));
+                editDateEnd.setText(dateFormatter.format(newDate.getTime()));
                 year2=year;
                 month2=monthOfYear;
                 day2=dayOfMonth;
@@ -107,7 +124,7 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
         fromHourPickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
 
             public void onTimeSet(TimePicker view, int hour, int minute) {
-                EditHourBegin.setText(hour+":"+minute);
+                editHourBegin.setText(hour+":"+minute);
                 hour1=hour;
                 minute1=minute;
             }
@@ -117,7 +134,7 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
         toHourPickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
 
             public void onTimeSet(TimePicker view, int hour, int minute) {
-                EditHourEnd.setText(hour+":"+minute);
+                editHourEnd.setText(hour+":"+minute);
                 hour2=hour;
                 minute2=minute;
             }
@@ -145,30 +162,30 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
         switch (item.getItemId()) {
             case R.id.action_validate:
                 // Perform action on click
-                EditText EditName = (EditText) findViewById(R.id.editNameEvent);
-                EditText EditLieu = (EditText) findViewById(R.id.editPlace);
-                EditText EditDateBegin = (EditText) findViewById(R.id.editDateBegin);
-                EditText EditDateEnd = (EditText) findViewById(R.id.editDateEnd);
-                Switch SwitchEvPrivate = (Switch) findViewById(R.id.switchPrivate);
+                EditText editName = (EditText) findViewById(R.id.editNameEvent);
+                EditText editLieu = (EditText) findViewById(R.id.editPlace);
+                EditText editDateBegin = (EditText) findViewById(R.id.editStartDate);
+                EditText editDateEnd = (EditText) findViewById(R.id.editDateEnd);
+                Switch switchEvPrivate = (Switch) findViewById(R.id.switchPrivate);
 
                 boolean completed = true;
 
                 System.out.println("in button");
 
 
-                if(EditName.getText().length()<=0){
-                    EditName.setError("You must fill this field");
+                if(editName.getText().length()<=0){
+                    editName.setError("You must fill this field");
                     completed = false;
                 }
                 else{
-                    EditName.setError(null);
+                    editName.setError(null);
                 }
-                if(EditLieu.getText().length()<=0){
-                    EditLieu.setError("You must fill this field");
+                if(editLieu.getText().length()<=0){
+                    editLieu.setError("You must fill this field");
                     completed = false;
                 }
                 else{
-                    EditLieu.setError(null);
+                    editLieu.setError(null);
                 }
 
                 try {
@@ -183,40 +200,40 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
                     Date d2 = newDate2.getTime();
 
 
-                    if(d1.after(d2) && EditDateBegin.getText().length()>0 && EditDateEnd.getText().length()>0 && EditHourBegin.getText().length()>0 && EditHourEnd.getText().length()>0){
-                        EditDateEnd.setText("");
-                        EditHourEnd.setText("");
-                        EditHourEnd.setError("Pick a greater date than above");
+                    if(d1.after(d2) && editDateBegin.getText().length()>0 && editDateEnd.getText().length()>0 && editHourBegin.getText().length()>0 && editHourEnd.getText().length()>0){
+                        editDateEnd.setText("");
+                        editHourEnd.setText("");
+                        editHourEnd.setError("Pick a greater date than above");
                         completed = false;
                     }
                     else{
-                        if(EditDateBegin.getText().length()<=0){
-                            EditDateBegin.setError("You must fill this field");
+                        if(editDateBegin.getText().length()<=0){
+                            editDateBegin.setError("You must fill this field");
                             completed = false;
                         }
                         else{
-                            EditDateBegin.setError(null);
+                            editDateBegin.setError(null);
                         }
-                        if(EditDateEnd.getText().length()<=0){
-                            EditDateEnd.setError("You must fill this field");
+                        if(editDateEnd.getText().length()<=0){
+                            editDateEnd.setError("You must fill this field");
                             completed = false;
                         }
                         else{
-                            EditDateEnd.setError(null);
+                            editDateEnd.setError(null);
                         }
-                        if(EditHourBegin.getText().length()<=0){
-                            EditHourBegin.setError("You must fill this field");
+                        if(editHourBegin.getText().length()<=0){
+                            editHourBegin.setError("You must fill this field");
                             completed = false;
                         }
                         else{
-                            EditHourBegin.setError(null);
+                            editHourBegin.setError(null);
                         }
-                        if(EditHourEnd.getText().length()<=0){
-                            EditHourEnd.setError("You must fill this field");
+                        if(editHourEnd.getText().length()<=0){
+                            editHourEnd.setError("You must fill this field");
                             completed = false;
                         }
                         else{
-                            EditHourEnd.setError(null);
+                            editHourEnd.setError(null);
                         }
                     }
                 }
@@ -224,13 +241,13 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
                     System.out.println("in catch");
                 }
 
-                if(completed==true){
-                    eventCreated.setName(EditName.getText().toString());
-                    eventCreated.setAddress(EditLieu.getText().toString());
-                    System.out.println(EditDateBegin.getText().toString());
+                if(completed){
+                    eventCreated.setName(editName.getText().toString());
+                    eventCreated.setAddress(editLieu.getText().toString());
+                    System.out.println(editDateBegin.getText().toString());
                     //eventCreated.setDateDebut(EditDateBegin.getText().toString());
                     //eventCreated.setDateFin(EditDateEnd.getText().toString());
-                    eventCreated.setEvPrivate(SwitchEvPrivate.isChecked());
+                    eventCreated.setEvPrivate(switchEvPrivate.isChecked());
                 }
 
 
@@ -240,14 +257,20 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
     }
     @Override
     public void onClick(View view) {
-        if(view == EditDateBegin) {
+        if(view == editDateBegin) {
             fromDatePickerDialog.show();
-        } else if(view == EditDateEnd) {
+        } else if(view == editDateEnd) {
             toDatePickerDialog.show();
-        } else if(view == EditHourBegin){
+        } else if(view == editHourBegin){
             fromHourPickerDialog.show();
-        } else if(view == EditHourEnd){
+        } else if(view == editHourEnd){
             toHourPickerDialog.show();
+        } else if(view == switchPrivate){
+            if( switchPrivate.isChecked() ){
+                switchPrivate.setTextColor(getResources().getColor(R.color.colorTextField));
+            } else {
+                switchPrivate.setTextColor(getResources().getColor(R.color.colorHint));
+            }
         }
 
 
