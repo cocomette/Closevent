@@ -8,4 +8,5 @@
     <string name="facebook_app_id">498090610374270</string>
     <string name="server_base_url">http://rocky-mesa-88769.herokuapp.com/</string>
     <string name="mapKey">AIzaSyD0h6o6s6ufP8Uzi2sC00imobpMVPi8q40</string>
+    <string name="title_activity_maps">Map</string>
 </resources>
