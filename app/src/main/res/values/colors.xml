@@ -5,4 +5,5 @@
     <color name="colorAccent">#474f8b</color>
     <color name="colorEditText">#b0aeae</color>
     <color name="colorTextField">#525050</color>
+    <color name="colorWhite">#ffffff</color>
 </resources>
