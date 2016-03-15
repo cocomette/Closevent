@@ -3,6 +3,7 @@ package com.closevent.closevent;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -44,6 +45,7 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
     private EditText editDateEnd;
     private EditText editHourBegin;
     private EditText editHourEnd;
+    private TextView editLocation;
     private Switch switchPrivate;
     private int year1;
     private int month1;
@@ -70,6 +72,7 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
         Date now = new Date();
         eventCreated = new Event();
 
+        editLocation = (TextView) findViewById(R.id.editLocation);
         editDateBegin = (EditText) findViewById(R.id.editStartDate);
         editDateEnd = (EditText) findViewById(R.id.editDateEnd);
         editHourBegin = (EditText) findViewById(R.id.editStartTime);
@@ -93,6 +96,7 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
         editHourBegin.setOnClickListener(this);
         editHourEnd.setOnClickListener(this);
         switchPrivate.setOnClickListener(this);
+        editLocation.setOnClickListener(this);
 
         final Calendar newCalendar = Calendar.getInstance();
         fromDatePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
@@ -129,7 +133,7 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
                 minute1=minute;
             }
 
-        },newCalendar.HOUR_OF_DAY, newCalendar.MINUTE, true);
+        },newCalendar.get(Calendar.HOUR_OF_DAY), newCalendar.get(Calendar.MINUTE), true);
 
         toHourPickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
 
@@ -139,7 +143,7 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
                 minute2=minute;
             }
 
-        },newCalendar.HOUR_OF_DAY, newCalendar.MINUTE, true);
+        },newCalendar.get(Calendar.HOUR_OF_DAY), newCalendar.get(Calendar.MINUTE), true);
 
 
     }
@@ -204,6 +208,7 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
                         editDateEnd.setText("");
                         editHourEnd.setText("");
                         editHourEnd.setError("Pick a greater date than above");
+
                         completed = false;
                     }
                     else{
@@ -265,14 +270,19 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
             fromHourPickerDialog.show();
         } else if(view == editHourEnd){
             toHourPickerDialog.show();
-        } else if(view == switchPrivate){
-            if( switchPrivate.isChecked() ){
+        } else if(view == switchPrivate) {
+            if (switchPrivate.isChecked()) {
                 switchPrivate.setTextColor(getResources().getColor(R.color.colorTextField));
             } else {
                 switchPrivate.setTextColor(getResources().getColor(R.color.colorHint));
             }
+        }else if(view == editLocation){
+            System.out.println("here1");
+            Intent mapIntent = new Intent(this, MapsActivity.class);
+            System.out.println("here2");
+            startActivity(mapIntent);
+            System.out.println("here3");
         }
-
 
     }
 

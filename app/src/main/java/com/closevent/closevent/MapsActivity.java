@@ -2,22 +2,33 @@ package com.closevent.closevent;
 
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.view.MotionEvent;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.Projection;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import org.w3c.dom.Text;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    private LatLng pin;
+    private TextView rdArea;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        rdArea=(TextView) findViewById(R.id.area);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -39,8 +50,50 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        pin = new LatLng(-34, 151);
+        mMap.addMarker(new MarkerOptions().position(pin).title("Marker in Sydney"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(pin));
+
+        //LatLng latLngRight = mMap.getProjection().getVisibleRegion().farRight;
+        //LatLng latLngLeft = mMap.getProjection().getVisibleRegion().nearLeft;
+        double radius = mMap.getCameraPosition().zoom/(mMap.getMaxZoomLevel()-mMap.getMinZoomLevel());
+        //double radius = Math.abs(latLngLeft.longitude - latLngRight.longitude)/4;
+        mMap.addCircle(new CircleOptions().center(pin).radius(radius * 100));
+        rdArea.setText("");
+
+        mMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
+            @Override
+            public void onCameraChange(CameraPosition cameraPosition) {
+                mMap.clear();
+                //LatLng latLngRight = mMap.getProjection().getVisibleRegion().farRight;
+                //LatLng latLngLeft = mMap.getProjection().getVisibleRegion().nearLeft;
+                mMap.addMarker(new MarkerOptions().position(pin));
+                //double radius = Math.abs(latLngLeft.longitude - latLngRight.longitude) / 4;
+                double radius = (mMap.getMaxZoomLevel()-mMap.getMinZoomLevel())/(mMap.getCameraPosition().zoom-mMap.getMinZoomLevel());
+                if (radius > 30) {
+                    radius = 30;
+                }
+                System.out.println(radius);
+                mMap.addCircle(new CircleOptions().center(pin).radius(radius * 100));
+            }
+        });
+
+        mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+            @Override
+            public void onMapLongClick(LatLng latLng) {
+                pin = latLng;
+                mMap.clear();
+                //LatLng latLngRight = mMap.getProjection().getVisibleRegion().farRight;
+                //LatLng latLngLeft = mMap.getProjection().getVisibleRegion().nearLeft;
+                mMap.addMarker(new MarkerOptions().position(pin));
+                //double radius = Math.abs(latLngLeft.longitude - latLngRight.longitude) / 4;
+                double radius = mMap.getCameraPosition().zoom/(mMap.getMaxZoomLevel()-mMap.getMinZoomLevel());
+                mMap.addCircle(new CircleOptions().center(pin).radius(radius * 100));
+            }
+        });
+
+
+
     }
+
 }

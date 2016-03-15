@@ -4,6 +4,7 @@
     tools:context="com.closevent.closevent.MainActivity" >
 
 
+
     <!-- Plus button -->
     <item android:id="@+id/action_add"
         android:icon="@drawable/ic_action_add"
@@ -12,8 +13,7 @@
 
     <!-- Log out button -->
     <item android:id="@+id/action_logout"
-        android:icon="@drawable/ic_deconexion"
         android:title="@string/action_logout"
         android:orderInCategory="100"
-        app:showAsAction="never" />
+        app:showAsAction="never"/>
 </menu>
