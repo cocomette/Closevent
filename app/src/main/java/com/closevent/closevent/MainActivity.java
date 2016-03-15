@@ -70,10 +70,11 @@ public class MainActivity extends AppCompatActivity implements EventFragment.OnF
                         System.out.println("TAB SELECTED");
                         int pos = tabLayout.getSelectedTabPosition();
                         if( pos == 0 ) {
-                            Event.updateUserEvents(LoginActivity.fbToken.getUserId());
+                            EventFragment.mAdapter.updateUserEvents(LoginActivity.fbToken.getUserId());
                         } else {
-                            Event.updateAllEvents();
+                            EventFragment.mAdapter.updateAllEvents();
                         }
+                        EventFragment.notifyChanges();
                     }
                 });
       

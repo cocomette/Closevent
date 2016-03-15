@@ -26,6 +26,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A fragment representing a list of Items.
@@ -62,6 +63,7 @@ public class EventFragment extends Fragment implements AbsListView.OnItemClickLi
      */
     public static EventAdapter mAdapter;
 
+
     // TODO: Rename and change types of parameters
     public static EventFragment newInstance(int onglet) {
         EventFragment fragment = new EventFragment();
@@ -78,15 +80,19 @@ public class EventFragment extends Fragment implements AbsListView.OnItemClickLi
     public EventFragment() {
     }
 
+    public static void notifyChanges() {
+        mAdapter.notifyDataSetChanged();
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mAdapter = new EventAdapter(this.getContext(), new ArrayList<Event>());
-        mAdapter.notifyDataSetChanged();
         if (getArguments() != null) {
             selectOnglet = getArguments().getInt(ARG_ONGLET);
         }
-        Event.updateUserEvents(LoginActivity.fbToken.getUserId());
+        mAdapter.updateUserEvents(LoginActivity.fbToken.getUserId());
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override

@@ -1,9 +1,11 @@
 package com.closevent.closevent.service;
 
+import com.closevent.closevent.EventAdapter;
 import com.closevent.closevent.EventFragment;
 import com.closevent.closevent.LoginActivity;
 
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import retrofit2.Call;
@@ -45,58 +47,6 @@ public class Event {
         this.is_private = true;
     }
 
-    public static void updateAllEvents() {
-
-        Call<List<Event>> req = LoginActivity.api.getEvents();
-        req.enqueue(new Callback<List<Event>>() {
-            @Override
-            public void onResponse(Call<List<Event>> req, Response<List<Event>> response) {
-                try {
-                    if( ! response.body().isEmpty() && EventFragment.mAdapter != null ) {
-                        EventFragment.mAdapter.clear();
-                        for( Event e:response.body() ) {
-                            EventFragment.mAdapter.add(e);
-                        }
-                    }
-                } catch (Exception e) {
-                    System.out.println(response.errorBody());
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Event>> req, Throwable t) {
-                System.out.println(t);
-            }
-        });
-    }
-
-    public static void updateUserEvents(String user_id) {
-
-        Call<List<Event>> req = LoginActivity.api.getUserEvents(user_id);
-        req.enqueue(new Callback<List<Event>>() {
-            @Override
-            public void onResponse(Call<List<Event>> req, Response<List<Event>> response) {
-                try {
-                    if(response.body() != null) {
-                        EventFragment.mAdapter.clear();
-                        if( ! response.body().isEmpty() && EventFragment.mAdapter != null ) {
-                            for( Event e:response.body() ) {
-                                EventFragment.mAdapter.add(e);
-                            }
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Event>> req, Throwable t) {
-                System.out.println(t);
-            }
-        });
-    }
     public String getId() {
         return id;
     }
