@@ -2,6 +2,7 @@ package com.closevent.closevent;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.multidex.MultiDex;
 import android.support.v7.app.AppCompatActivity;
 
 import com.closevent.closevent.service.CloseventApi;
@@ -31,6 +32,7 @@ public class LoginActivity extends AppCompatActivity{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        MultiDex.install(getApplicationContext());
         FacebookSdk.sdkInitialize(getApplicationContext());
         Gson gson = new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd HH:mm:ss.S")
