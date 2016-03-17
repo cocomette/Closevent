@@ -24,6 +24,7 @@ import android.widget.TimePicker;
 
 import com.closevent.closevent.service.Event;
 
+import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -121,7 +122,10 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
         fromHourPickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
 
             public void onTimeSet(TimePicker view, int hour, int minute) {
-                editHourBegin.setText(hour+":"+minute);
+                Calendar newDate = Calendar.getInstance();
+                long timemilli = (hour-1)*3600*1000+minute*60*1000;
+                newDate.setTimeInMillis(timemilli);
+                editHourBegin.setText(timeFormatter.format(newDate.getTime()));
                 hour1=hour;
                 minute1=minute;
             }
@@ -131,7 +135,10 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
         toHourPickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
 
             public void onTimeSet(TimePicker view, int hour, int minute) {
-                editHourEnd.setText(hour+":"+minute);
+                Calendar newDate = Calendar.getInstance();
+                long timemilli = (hour-1)*3600*1000+minute*60*1000;
+                newDate.setTimeInMillis(timemilli);
+                editHourEnd.setText(timeFormatter.format(newDate.getTime()));
                 hour2=hour;
                 minute2=minute;
             }
@@ -207,7 +214,7 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
         switch (item.getItemId()) {
             case R.id.action_validate:
                 // Perform action on click
-                fillForm();
+                //fillForm();
                 boolean completed = true;
 
                 System.out.println("Validate clicked !");
@@ -272,6 +279,13 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
                         else{
                             editHourEnd.setError(null);
                         }
+                        if(editAddress.getText().length()<=0){
+                            editAddress.setError("You must fill this field");
+                            completed = false;
+                        }
+                        else{
+                            editAddress.setError(null);
+                        }
                     }
                 }
                 catch (Exception e){
@@ -284,6 +298,7 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
                     Event newEvent = getEventFromFields();
                     System.out.println(newEvent.name);
                     newEvent.save();
+                    CreateActivity.this.finish();
                 }
 
 
