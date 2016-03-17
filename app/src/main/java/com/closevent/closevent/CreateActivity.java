@@ -49,7 +49,7 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
     private EditText editHourBegin;
     private EditText editHourEnd;
     private EditText editAddress;
-    private TextView editLocation;
+    public static TextView editLocation;
     private Switch switchPrivate;
     private int year1;
     private int month1;
