@@ -6,6 +6,8 @@ import com.android.volley.RequestQueue;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,16 +54,10 @@ public class EventFragment extends Fragment implements AbsListView.OnItemClickLi
 
     private OnFragmentInteractionListener mListener;
 
-    /**
-     * The fragment's ListView/GridView.
-     */
-    private AbsListView mListView;
 
-    /**
-     * The Adapter which will be used to populate the ListView/GridView with
-     * Views.
-     */
-    public static EventAdapter mAdapter;
+    private AbsListView mListView;
+    public static EventAdapter userEvents;
+    public static EventAdapter allEvents;
 
 
     // TODO: Rename and change types of parameters
@@ -80,32 +76,46 @@ public class EventFragment extends Fragment implements AbsListView.OnItemClickLi
     public EventFragment() {
     }
 
-    public static void notifyChanges() {
-        mAdapter.notifyDataSetChanged();
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mAdapter = new EventAdapter(this.getContext(), new ArrayList<Event>());
+        userEvents = new EventAdapter(this.getContext(), new ArrayList<Event>());
+        allEvents = new EventAdapter(this.getContext(), new ArrayList<Event>());
         if (getArguments() != null) {
             selectOnglet = getArguments().getInt(ARG_ONGLET);
         }
-        mAdapter.updateUserEvents(LoginActivity.fbToken.getUserId());
-        mAdapter.notifyDataSetChanged();
+        userEvents.updateUserEvents();
+        userEvents.notifyDataSetChanged();
+
+        TabLayout tabLayout = (TabLayout) getActivity().findViewById(R.id.tabs);
+        ViewPager mViewPager = (ViewPager) getActivity().findViewById(R.id.container);
+        tabLayout.setupWithViewPager(mViewPager);
+        tabLayout.setOnTabSelectedListener(
+                new TabLayout.ViewPagerOnTabSelectedListener(mViewPager) {
+                    @Override
+                    public void onTabSelected(TabLayout.Tab tab) {
+                        super.onTabSelected(tab);
+                        System.out.println("TAB SELECTED");
+                        if( tab.getPosition() == 0 ) {
+                            mListView.setAdapter(userEvents);
+                            userEvents.updateUserEvents();
+                            userEvents.notifyDataSetChanged();
+                        } else {
+                            mListView.setAdapter(allEvents);
+                            allEvents.updateAllEvents();
+                            allEvents.notifyDataSetChanged();
+                        }
+                    }
+                }
+        );
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.events, container, false);
-
         // Set the adapter
         mListView = (AbsListView)view.findViewById(R.id.listEvents);
-
-        mListView.setAdapter(mAdapter);
-
-        // Set OnItemClickListener so we can be notified on item clicks
+        mListView.setAdapter(userEvents);
         mListView.setOnItemClickListener(this);
 
         return view;

@@ -54,30 +54,10 @@ public class MainActivity extends AppCompatActivity implements EventFragment.OnF
         setSupportActionBar(toolbar);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        mSectionsPagerAdapter = new SectionsPagerAdapter( getSupportFragmentManager() );
 
         // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-
-        final TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(mViewPager);
-        tabLayout.setOnTabSelectedListener(
-                new TabLayout.ViewPagerOnTabSelectedListener(mViewPager) {
-                    @Override
-                    public void onTabSelected(TabLayout.Tab tab) {
-                        super.onTabSelected(tab);
-                        System.out.println("TAB SELECTED");
-                        int pos = tabLayout.getSelectedTabPosition();
-                        if( pos == 0 ) {
-                            EventFragment.mAdapter.updateUserEvents(LoginActivity.fbToken.getUserId());
-                        } else {
-                            EventFragment.mAdapter.updateAllEvents();
-                        }
-                        EventFragment.notifyChanges();
-                    }
-                });
-      
+        ((ViewPager) findViewById(R.id.container)).setAdapter(mSectionsPagerAdapter);
     }
 
 

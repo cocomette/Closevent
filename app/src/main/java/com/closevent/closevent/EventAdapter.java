@@ -23,38 +23,6 @@ public class EventAdapter extends ArrayAdapter<Event> {
     public EventAdapter(Context context, List<Event> theEvents) {
         super(context, 0, theEvents);
     }
-    private List<Event> allEvents = new ArrayList<>();
-    private List<Event> userEvents = new ArrayList<>();
-
-    private static void syncEvents(List<Event> ref, List<Event> old) {
-        // Clear deleted ones
-        for (int i=0; i < old.size(); i++ ) {
-            boolean found = false;
-            for( Event e_ref:ref ) {
-                if (e_ref.id.equals(old.get(i).id)) {
-                    found = true;
-                    break;
-                }
-            }
-            if( ! found ) {
-                old.remove(i);
-            }
-        }
-
-        // Add new ones
-        for( int i=0; i < ref.size(); i++ ) {
-            boolean found = false;
-            for( Event e_old:old ) {
-                if (ref.get(i).id.equals(e_old.id)) {
-                    found = true;
-                    break;
-                }
-            }
-            if( ! found ) {
-                old.add(ref.get(i));
-            }
-        }
-    }
 
     private void syncEvents(List<Event> ref) {
         // Clear deleted ones
@@ -87,15 +55,13 @@ public class EventAdapter extends ArrayAdapter<Event> {
     }
 
     public void updateAllEvents() {
-
         Call<List<Event>> req = LoginActivity.api.getEvents();
         req.enqueue(new Callback<List<Event>>() {
             @Override
             public void onResponse(Call<List<Event>> req, Response<List<Event>> response) {
                 try {
                     if( response.body() != null ) {
-                        syncEvents(response.body(), allEvents);
-                        syncEvents(allEvents);
+                        syncEvents(response.body());
                     }
                 } catch (Exception e) {
                     System.out.println(response.errorBody());
@@ -110,16 +76,15 @@ public class EventAdapter extends ArrayAdapter<Event> {
         });
     }
 
-    public void updateUserEvents(String user_id) {
-
+    public void updateUserEvents() {
+        String user_id = LoginActivity.fbToken.getUserId();
         Call<List<Event>> req = LoginActivity.api.getUserEvents(user_id);
         req.enqueue(new Callback<List<Event>>() {
             @Override
             public void onResponse(Call<List<Event>> req, Response<List<Event>> response) {
                 try {
                     if (response.body() != null) {
-                        syncEvents(response.body(), userEvents);
-                        syncEvents(userEvents);
+                        syncEvents(response.body());
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
