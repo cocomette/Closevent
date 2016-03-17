@@ -12,10 +12,15 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -69,11 +74,34 @@ public class LoginActivity extends AppCompatActivity{
             @Override
             public void onSuccess(LoginResult loginResult) {
                 fbToken = loginResult.getAccessToken();
-                String id = fbToken.getUserId();
-                String name = "Henri HANNETEL";
-                String picture = "";
-                User user = new User(id, name, picture);
-                user.register();
+                GraphRequest request = GraphRequest.newMeRequest(
+                        fbToken,
+                        new GraphRequest.GraphJSONObjectCallback() {
+                            @Override
+                            public void onCompleted( JSONObject object, GraphResponse response) {
+                                System.out.println(object.toString());
+                                String name = "";
+                                try {
+                                    name = (String) object.get("name");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                String picture_url = "";
+                                try {
+                                    JSONObject picture = (JSONObject) ((JSONObject)object.get("picture")).get("data");
+                                    picture_url = (String) picture.get("url");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                User user = new User(fbToken.getUserId(), name, picture_url);
+                                user.register();
+                            }
+                        }
+                );
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "name,picture");
+                request.setParameters(parameters);
+                request.executeAsync();
 
 
                 // Launch main activity

@@ -105,7 +105,7 @@ public class EventAdapter extends ArrayAdapter<Event> {
 
             @Override
             public void onFailure(Call<List<Event>> req, Throwable t) {
-                System.out.println(t);
+                t.printStackTrace();
             }
         });
     }
