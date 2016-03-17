@@ -24,4 +24,7 @@ public interface CloseventApi {
 
     @GET("user/{user_id}/events")
     Call<List<Event>> getUserEvents(@Path("user_id") String user_id);
+
+    @PUT("events")
+    Call<Event> createEvent(@Body Event event);
 }

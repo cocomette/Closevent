@@ -24,9 +24,12 @@ import android.widget.TimePicker;
 
 import com.closevent.closevent.service.Event;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -34,17 +37,18 @@ import java.util.Locale;
  */
 public class CreateActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private Event eventCreated;
     private SimpleDateFormat dateFormatter;
     private SimpleDateFormat timeFormatter;
     private DatePickerDialog fromDatePickerDialog;
     private DatePickerDialog toDatePickerDialog;
     private TimePickerDialog fromHourPickerDialog;
     private TimePickerDialog toHourPickerDialog;
+    private EditText editName;
     private EditText editDateBegin;
     private EditText editDateEnd;
     private EditText editHourBegin;
     private EditText editHourEnd;
+    private EditText editAddress;
     private TextView editLocation;
     private Switch switchPrivate;
     private int year1;
@@ -58,33 +62,22 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
     private int hour2;
     private int minute2;
 
-    private Date getEndDate(Date startDate) {
-        Calendar c = Calendar.getInstance();
-        c.setTime(startDate);
-        c.add(Calendar.DATE, 1);
-        return c.getTime();
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create);
-        Date now = new Date();
-        eventCreated = new Event();
 
+        editName = (EditText) findViewById(R.id.editNameEvent);
         editLocation = (TextView) findViewById(R.id.editLocation);
         editDateBegin = (EditText) findViewById(R.id.editStartDate);
         editDateEnd = (EditText) findViewById(R.id.editDateEnd);
         editHourBegin = (EditText) findViewById(R.id.editStartTime);
         editHourEnd = (EditText) findViewById(R.id.editEndTime);
+        editAddress = (EditText) findViewById(R.id.editPlace);
         switchPrivate = (Switch) findViewById(R.id.switchPrivate);
 
         dateFormatter = new SimpleDateFormat("dd MMMM yyyy", Locale.FRANCE);
-        timeFormatter = new SimpleDateFormat("HH 'h' mm", Locale.FRANCE);
-        editDateBegin.setHint(dateFormatter.format(now));
-        editDateEnd.setHint(dateFormatter.format(this.getEndDate(now)));
-        editHourBegin.setHint(timeFormatter.format(now));
-        editHourEnd.setHint(timeFormatter.format(now));
+        timeFormatter = new SimpleDateFormat("HH:mm", Locale.FRANCE);
 
         editDateBegin.setInputType(InputType.TYPE_NULL);
         editDateEnd.setInputType(InputType.TYPE_NULL);
@@ -147,7 +140,55 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
 
 
     }
+    private void fillForm() {
+        editName.setText("Saint Patrick");
+        editDateBegin.setText("17 mars 2016");
+        editHourBegin.setText("18:00");
+        editDateEnd.setText("18 mars 2016");
+        editHourEnd.setText("2:00");
+        editAddress.setText("1 Bois Yvon");
+        editLocation.setText("(-12.3444, 3.54) 500m");
 
+    }
+
+    private Event getEventFromFields() {
+        String name = editName.getText().toString();
+        String user_id = LoginActivity.fbToken.getUserId();
+        Date start_date = null;
+        try {
+            start_date = new Date(dateFormatter.parse(editDateBegin.getText().toString()).getTime()
+                    + timeFormatter.parse(editHourBegin.getText().toString()).getTime());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Date end_date = null;
+        try {
+            end_date = new Date(dateFormatter.parse(editDateEnd.getText().toString()).getTime()
+                    + timeFormatter.parse(editHourEnd.getText().toString()).getTime());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        boolean is_private = switchPrivate.isChecked();
+        String address = editAddress.getText().toString();
+
+        // Parse Location : (-12.3444, 3.54) 500m
+        String[] location = editLocation.getText().toString().split("\\(|, |\\) |m", -1);
+        List<Float> position = new ArrayList<>();
+        int radius = 500;
+        for( String s:location ) {
+            if( ! s.isEmpty() ) {
+                if( position.size() < 2 ) {
+                    position.add(Float.parseFloat(s));
+                } else {
+                    radius = Integer.parseInt(s);
+                    break;
+                }
+            }
+        }
+
+        return new Event( name, user_id, start_date, end_date, is_private,
+                address, position, radius );
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -166,15 +207,10 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
         switch (item.getItemId()) {
             case R.id.action_validate:
                 // Perform action on click
-                EditText editName = (EditText) findViewById(R.id.editNameEvent);
-                EditText editLieu = (EditText) findViewById(R.id.editPlace);
-                EditText editDateBegin = (EditText) findViewById(R.id.editStartDate);
-                EditText editDateEnd = (EditText) findViewById(R.id.editDateEnd);
-                Switch switchEvPrivate = (Switch) findViewById(R.id.switchPrivate);
-
+                fillForm();
                 boolean completed = true;
 
-                System.out.println("in button");
+                System.out.println("Validate clicked !");
 
 
                 if(editName.getText().length()<=0){
@@ -183,13 +219,6 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
                 }
                 else{
                     editName.setError(null);
-                }
-                if(editLieu.getText().length()<=0){
-                    editLieu.setError("You must fill this field");
-                    completed = false;
-                }
-                else{
-                    editLieu.setError(null);
                 }
 
                 try {
@@ -204,7 +233,10 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
                     Date d2 = newDate2.getTime();
 
 
-                    if(d1.after(d2) && editDateBegin.getText().length()>0 && editDateEnd.getText().length()>0 && editHourBegin.getText().length()>0 && editHourEnd.getText().length()>0){
+                    if( editDateBegin.getText().length() > 0 && d1.after(d2)
+                            && editDateEnd.getText().length() > 0
+                            && editHourBegin.getText().length()>0
+                            && editHourEnd.getText().length()  >0) {
                         editDateEnd.setText("");
                         editHourEnd.setText("");
                         editHourEnd.setError("Pick a greater date than above");
@@ -244,15 +276,14 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
                 }
                 catch (Exception e){
                     System.out.println("in catch");
+                    e.printStackTrace();
                 }
 
                 if(completed){
-                    eventCreated.setName(editName.getText().toString());
-                    eventCreated.setAddress(editLieu.getText().toString());
-                    System.out.println(editDateBegin.getText().toString());
-                    //eventCreated.setDateDebut(EditDateBegin.getText().toString());
-                    //eventCreated.setDateFin(EditDateEnd.getText().toString());
-                    eventCreated.setEvPrivate(switchEvPrivate.isChecked());
+                    System.out.println("Completed !");
+                    Event newEvent = getEventFromFields();
+                    System.out.println(newEvent.name);
+                    newEvent.save();
                 }
 
 

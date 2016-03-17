@@ -21,7 +21,7 @@ import org.w3c.dom.Text;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    private LatLng pin;
+    public static LatLng pin;
     private TextView rdArea;
 
     @Override

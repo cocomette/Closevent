@@ -21,21 +21,24 @@ public class Event {
     public String user_id;
     public Date start_date;
     public Date end_date;
-    public String address;
     public String password;
     public boolean is_private;
-    public int radius;
+    public String address;
     public List<Float> position;
+    public int radius;
     public List<String> main_thread;
     public List<String> org_thread;
 
-    public Event(String id, String name, Date dateDebut, Date dateFin, String address, boolean evPrivate) {
-        this.id = id;
+    public Event(String name, String user_id, Date start_date, Date end_date, boolean is_private,
+                 String address, List<Float> position, int radius) {
         this.name = name;
-        this.start_date = dateDebut;
-        this.end_date = dateFin;
+        this.user_id = user_id;
+        this.start_date = start_date;
+        this.end_date = end_date;
+        this.is_private = is_private;
         this.address = address;
-        this.is_private = evPrivate;
+        this.position = position;
+        this.radius = radius;
     }
 
     public Event(){
@@ -45,6 +48,29 @@ public class Event {
         this.end_date = null;
         this.address = "undefined";
         this.is_private = true;
+    }
+
+    public void save() {
+        Call<Event> req = LoginActivity.api.createEvent(this);
+        req.enqueue(new Callback<Event>() {
+            @Override
+            public void onResponse(Call<Event> req, Response<Event> response) {
+                try {
+                    if( response.body() != null ) {
+                        System.out.println("Event created: " + response.body().id);
+                    } else {
+                        System.out.println("Err: " + response.errorBody().string());
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Event> req, Throwable t) {
+                System.out.println(t);
+            }
+        });
     }
 
     public String getId() {
