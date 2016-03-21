@@ -173,5 +173,7 @@ public class EventActivity extends AppCompatActivity implements TweetFragment.On
             textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
             return rootView;
         }
+
+
     }
 }

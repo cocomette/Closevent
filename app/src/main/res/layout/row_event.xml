@@ -15,8 +15,7 @@
         android:textColor="@android:color/black"
         android:layout_marginLeft="10dp"
         android:textStyle="bold"
-        tools:text="Nom événement"
-        />
+        tools:text="Nom événement" />
 
     <TextView
         android:id="@+id/eventAddress"
@@ -25,7 +24,6 @@
         android:textColor="@android:color/black"
         android:layout_alignLeft="@+id/eventName"
         android:layout_below="@+id/eventName"
-        tools:text="Adresse de l'événement"
-        />
+        tools:text="Adresse de l'événement" />
 
 </RelativeLayout>

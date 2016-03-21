@@ -1,6 +1,7 @@
 package com.closevent.closevent;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -43,6 +45,8 @@ public class TweetFragment extends Fragment implements AbsListView.OnItemClickLi
         tweets.add(new Tweet(Color.BLUE, "Kevin", "C'est ici que ça se passe !"));
         return tweets;
     }
+
+    private EditText editPost;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -112,14 +116,22 @@ public class TweetFragment extends Fragment implements AbsListView.OnItemClickLi
         }
         if(mParam1==2) {
             View view = inflater.inflate(R.layout.onglet_user, container, false);
-
+            editPost = (EditText) view.findViewById(R.id.editPost);
             // Set the adapter
             mListView = (AbsListView) view.findViewById(R.id.listPost);
             ((AdapterView<ListAdapter>) mListView).setAdapter(mAdapter);
 
             // Set OnItemClickListener so we can be notified on item clicks
-            mListView.setOnItemClickListener(this);
+            //mListView.setOnItemClickListener(this);
+            editPost.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getContext(),PostActivity.class);
+                    startActivity(intent);
+                }
+            });
             return view;
+
         }
         else {
             View view = inflater.inflate(R.layout.onglet_admin, container, false);
@@ -129,7 +141,7 @@ public class TweetFragment extends Fragment implements AbsListView.OnItemClickLi
             ((AdapterView<ListAdapter>) mListView).setAdapter(mAdapter);
 
             // Set OnItemClickListener so we can be notified on item clicks
-            mListView.setOnItemClickListener(this);
+            //mListView.setOnItemClickListener(this);
             return view;
         }
 
@@ -157,7 +169,7 @@ public class TweetFragment extends Fragment implements AbsListView.OnItemClickLi
         if (null != mListener) {
             // Notify the active callbacks interface (the activity, if the
             // fragment is attached to one) that an item has been selected.
-            mListener.onFragmentInteraction(DummyContent.ITEMS1.get(position).id);
+            //mListener.onFragmentInteraction(DummyContent.ITEMS1.get(position).id);
         }
     }
 

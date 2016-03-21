@@ -9,4 +9,8 @@
     <string name="server_base_url">http://rocky-mesa-88769.herokuapp.com/</string>
     <string name="mapKey">AIzaSyD0h6o6s6ufP8Uzi2sC00imobpMVPi8q40</string>
     <string name="title_activity_maps">Map</string>
+    <string name="title_activity_code">CodeActivity</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_post">PostActivity</string>
 </resources>

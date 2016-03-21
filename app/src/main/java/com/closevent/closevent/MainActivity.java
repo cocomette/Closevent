@@ -46,7 +46,6 @@ public class MainActivity extends AppCompatActivity implements EventFragment.OnF
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        System.out.println("Main Activity");
 
         setContentView(R.layout.activity_main);
 

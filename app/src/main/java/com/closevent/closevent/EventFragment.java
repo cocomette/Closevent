@@ -5,6 +5,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -45,10 +46,9 @@ public class EventFragment extends Fragment implements AbsListView.OnItemClickLi
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_ONGLET = "onglet";
-    private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
-    private int selectOnglet;
+    public int selectOnglet;
     public int cpt = 0;
     //private String mParam2;
 
@@ -96,7 +96,9 @@ public class EventFragment extends Fragment implements AbsListView.OnItemClickLi
                     public void onTabSelected(TabLayout.Tab tab) {
                         super.onTabSelected(tab);
                         System.out.println("TAB SELECTED");
-                        if( tab.getPosition() == 0 ) {
+                        selectOnglet = tab.getPosition();
+                        System.out.println(selectOnglet);
+                        if( selectOnglet == 0 ) {
                             mListView.setAdapter(userEvents);
                             userEvents.updateUserEvents();
                             userEvents.notifyDataSetChanged();
@@ -143,8 +145,22 @@ public class EventFragment extends Fragment implements AbsListView.OnItemClickLi
         if (null != mListener) {
             // Notify the active callbacks interface (the activity, if the
             // fragment is attached to one) that an item has been selected.
-            mListener.onFragmentInteraction(DummyContent.ITEMS1.get(position).id);
+            mListener.onFragmentInteraction(((Event) mListView.getItemAtPosition(position)).getId());
+            System.out.println("onclick");
         }
+        TabLayout tabLayout = (TabLayout) getActivity().findViewById(R.id.tabs);
+        selectOnglet = tabLayout.getSelectedTabPosition();
+        System.out.println(selectOnglet);
+            if(selectOnglet == 0){
+                Intent intent = new Intent(this.getContext(), EventActivity.class);
+                startActivity(intent);
+                System.out.println("flux");
+            }
+            else if(selectOnglet == 1){
+                Intent intent = new Intent(this.getContext(), CodeActivity.class);
+                startActivity(intent);
+                System.out.println("Code");
+            }
     }
 
 

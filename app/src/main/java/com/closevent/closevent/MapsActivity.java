@@ -58,7 +58,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         validate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CreateActivity.editLocation.setText("("+lat+", "+lng+")");
+                CreateActivity.editLocation.setText("("+lat+", "+lng+") "+"500m");
                 MapsActivity.this.finish();
             }
         });
