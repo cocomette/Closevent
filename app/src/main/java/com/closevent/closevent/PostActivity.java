@@ -31,7 +31,6 @@ public class PostActivity extends AppCompatActivity implements View.OnClickListe
         editPic = (TextView) findViewById(R.id.editPic);
 
         editPic.setOnClickListener(this);
-
     }
 
     @Override
@@ -60,7 +59,6 @@ public class PostActivity extends AppCompatActivity implements View.OnClickListe
                     editPost.setError(null);
                 }
 
-
                 if (completed) {
                     Post post = new Post(editPost.getText().toString(), LoginActivity.fbToken.getUserId());
                     post.save(TweetFragment.event.id);
@@ -80,7 +78,6 @@ public class PostActivity extends AppCompatActivity implements View.OnClickListe
     }
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
             Uri selectedImage = data.getData();
             String[] filePathColumn = { MediaStore.Images.Media.DATA };
@@ -95,10 +92,6 @@ public class PostActivity extends AppCompatActivity implements View.OnClickListe
 
             ImageView imageView = (ImageView) findViewById(R.id.showPic);
             imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-
         }
-
-
     }
-
 }
