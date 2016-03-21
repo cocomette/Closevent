@@ -1,6 +1,7 @@
 package com.closevent.closevent;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,9 +10,14 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.closevent.closevent.service.Event;
 import com.closevent.closevent.service.Tweet;
 
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by Côme on 05/03/2016.
@@ -43,11 +49,24 @@ public class TweetAdapter extends ArrayAdapter<Tweet> {
         //il ne reste plus qu'à remplir notre vue
         viewHolder.pseudo.setText(tweet.user.name);
         viewHolder.text.setText(tweet.comment);
-        viewHolder.avatar.setImageDrawable(new ColorDrawable(tweet.color));
+        viewHolder.avatar.setImageDrawable(new ColorDrawable(Color.BLACK));
 
         return convertView;
     }
 
+    public void updateOrgTweets( Event e) {
+        this.clear();
+        for( Tweet t:e.org_thread) {
+            this.add(t);
+        }
+    }
+
+    public void updateMainTweets( Event e) {
+        this.clear();
+        for( Tweet t:e.main_thread) {
+            this.add(t);
+        }
+    }
     private class TweetViewHolder{
         public TextView pseudo;
         public TextView text;

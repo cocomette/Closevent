@@ -12,13 +12,16 @@ import retrofit2.http.Path;
  * Created by Henri on 08/03/2016.
  */
 public interface CloseventApi {
-
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // USERS
     @PUT("users")
     Call<User> createUser(@Body User user);
 
     @GET("user/{user_id}")
     Call<User> getUser(@Path("user_id") String user_id);
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // EVENTS
     @GET("events")
     Call<List<Event>> getEvents();
 

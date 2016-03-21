@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
+import com.closevent.closevent.service.Event;
 import com.closevent.closevent.service.Tweet;
 
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ public class TweetFragment extends Fragment implements AbsListView.OnItemClickLi
 
     private TweetAdapter org_thread;
     private TweetAdapter main_thread;
+    public static Event event;
 
     private List<Tweet> genererTweets(){
         List<Tweet> tweets = new ArrayList<Tweet>();
@@ -54,12 +56,6 @@ public class TweetFragment extends Fragment implements AbsListView.OnItemClickLi
      */
     private AbsListView mListView;
 
-    /**
-     * The Adapter which will be used to populate the ListView/GridView with
-     * Views.
-     */
-    private ListAdapter mAdapter;
-
     // TODO: Rename and change types of parameters
     public static TweetFragment newInstance(int param1) {
         TweetFragment fragment = new TweetFragment();
@@ -79,20 +75,12 @@ public class TweetFragment extends Fragment implements AbsListView.OnItemClickLi
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        org_thread = new TweetAdapter(this.getContext(), event.org_thread);
+        main_thread = new TweetAdapter(this.getContext(), event.main_thread);
 
         if (getArguments() != null) {
             mParam1 = getArguments().getInt(ARG_PARAM1);
             //mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-        if(mParam1==2) {
-            List<Tweet> theTweets = genererTweets();
-            // TODO: Change Adapter to display your content
-            mAdapter = new TweetAdapter(this.getContext(), theTweets);
-        }
-        else{
-            List<Tweet> theTweets = genererTweets2();
-            // TODO: Change Adapter to display your content
-            mAdapter = new TweetAdapter(this.getContext(), theTweets);
         }
     }
 
@@ -109,7 +97,7 @@ public class TweetFragment extends Fragment implements AbsListView.OnItemClickLi
             editPost.requestFocus();
             // Set the adapter
             mListView = (AbsListView) view.findViewById(R.id.listPost);
-            ((AdapterView<ListAdapter>) mListView).setAdapter(mAdapter);
+            ((AdapterView<ListAdapter>) mListView).setAdapter(org_thread);
 
             // Set OnItemClickListener so we can be notified on item clicks
             //mListView.setOnItemClickListener(this);
@@ -128,7 +116,7 @@ public class TweetFragment extends Fragment implements AbsListView.OnItemClickLi
 
             // Set the adapter
             mListView = (AbsListView) view.findViewById(R.id.listPost);
-            ((AdapterView<ListAdapter>) mListView).setAdapter(mAdapter);
+            ((AdapterView<ListAdapter>) mListView).setAdapter(main_thread);
 
             // Set OnItemClickListener so we can be notified on item clicks
             //mListView.setOnItemClickListener(this);
