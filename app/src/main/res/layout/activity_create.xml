@@ -114,7 +114,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="(-34, 151) 500m"
+                android:text="(-34, 15) 500m"
                 android:textColor="@color/colorHint"
                 android:id="@+id/editLocation"
                 android:gravity="center_vertical"
