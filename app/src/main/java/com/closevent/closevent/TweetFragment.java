@@ -3,7 +3,10 @@ package com.closevent.closevent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +21,10 @@ import com.closevent.closevent.service.Tweet;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by Côme on 05/03/2016.
@@ -71,7 +78,62 @@ public class TweetFragment extends Fragment implements AbsListView.OnItemClickLi
      */
     public TweetFragment() {
     }
+    public void updateMain() {
+        Call<Event> req = LoginActivity.api.getEvent(event.id);
+        System.out.println("CALL UPDATE");
+        final Event e = new Event();
+        req.enqueue(new Callback<Event>() {
+            @Override
+            public void onResponse(Call<Event> req, Response<Event> response) {
+                try {
+                    if (response.body() != null) {
+                        TweetFragment.event.set(response.body());
+                        main_thread.updateOrgTweets(event);
+                        mListView.setAdapter(main_thread);
+                        mListView.invalidateViews();
+                        main_thread.notifyDataSetChanged();
+                    } else {
+                        Log.e("Err", response.errorBody().string());
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
 
+            @Override
+            public void onFailure(Call<Event> req, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+    public void updateOrg() {
+        Call<Event> req = LoginActivity.api.getEvent(event.id);
+        System.out.println("CALL UPDATE");
+        final Event e = new Event();
+        req.enqueue(new Callback<Event>() {
+            @Override
+            public void onResponse(Call<Event> req, Response<Event> response) {
+                try {
+                    if (response.body() != null) {
+                        event.set(response.body());
+                        org_thread.updateOrgTweets(event);
+                        mListView.setAdapter(org_thread);
+                        mListView.invalidateViews();
+                        org_thread.notifyDataSetChanged();
+                    } else {
+                        Log.e("Err", response.errorBody().string());
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Event> req, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,6 +144,25 @@ public class TweetFragment extends Fragment implements AbsListView.OnItemClickLi
             mParam1 = getArguments().getInt(ARG_PARAM1);
             //mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        TabLayout tabLayout = (TabLayout) getActivity().findViewById(R.id.tabs);
+        ViewPager mViewPager = (ViewPager) getActivity().findViewById(R.id.container);
+        tabLayout.setupWithViewPager(mViewPager);
+        tabLayout.setOnTabSelectedListener(
+                new TabLayout.ViewPagerOnTabSelectedListener(mViewPager) {
+                    @Override
+                    public void onTabSelected(TabLayout.Tab tab) {
+                        super.onTabSelected(tab);
+                        System.out.println("TAB SELECTED");
+                        int pos = tab.getPosition();
+                        if( pos == 0 ) {
+                            updateOrg();
+                        } else {
+                            updateMain();
+                        }
+                    }
+                }
+        );
     }
 
     @Override

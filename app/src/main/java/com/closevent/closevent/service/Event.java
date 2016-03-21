@@ -1,8 +1,13 @@
 package com.closevent.closevent.service;
 
+import android.app.FragmentManager;
+import android.util.Log;
+
 import com.closevent.closevent.EventAdapter;
 import com.closevent.closevent.EventFragment;
 import com.closevent.closevent.LoginActivity;
+import com.closevent.closevent.R;
+import com.closevent.closevent.TweetFragment;
 
 import java.util.Date;
 import java.util.Iterator;
@@ -41,6 +46,21 @@ public class Event {
         this.radius = radius;
     }
 
+    public void set(Event e) {
+        this.id = e.id;
+        this.name = e.name;
+        this.user_id = e.user_id;
+        this.start_date = e.start_date;
+        this.end_date = e.end_date;
+        this.password = e.password;
+        this.is_private = e.is_private;
+        this.address = e.address;
+        this.position = e.position;
+        this.radius = e.radius;
+        this.main_thread = e.main_thread;
+        this.org_thread = e.org_thread;
+    }
+
     public Event(){
         this.id= "undefined";
         this.name = "undefined";
@@ -68,7 +88,7 @@ public class Event {
 
             @Override
             public void onFailure(Call<Event> req, Throwable t) {
-                System.out.println(t);
+                t.printStackTrace();
             }
         });
     }
