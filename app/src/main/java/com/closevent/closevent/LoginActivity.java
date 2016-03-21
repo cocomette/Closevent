@@ -118,11 +118,7 @@ public class LoginActivity extends AppCompatActivity{
             public void onError(FacebookException e) {
                 System.out.println("on error");
             }
-
-
         });
-
-
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

@@ -99,10 +99,13 @@ public class EventFragment extends Fragment implements AbsListView.OnItemClickLi
                         selectOnglet = tab.getPosition();
                         System.out.println(selectOnglet);
                         if( selectOnglet == 0 ) {
+                            mListView.invalidateViews();
                             mListView.setAdapter(userEvents);
                             userEvents.updateUserEvents();
                             userEvents.notifyDataSetChanged();
+                            mListView.invalidateViews();
                         } else {
+                            mListView.invalidateViews();
                             mListView.setAdapter(allEvents);
                             allEvents.updateAllEvents();
                             allEvents.notifyDataSetChanged();
