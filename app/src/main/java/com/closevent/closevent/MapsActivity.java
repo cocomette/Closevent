@@ -70,7 +70,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Geocoder geocoder = new Geocoder(MapsActivity.this, Locale.getDefault());
                 try {
                     addresses = geocoder.getFromLocation(pin.latitude, pin.longitude, 1);
-                    ad = addresses.get(0).getAddressLine(0)+" "+addresses.get(0).getLocality();
+                    ad = addresses.get(0).getAddressLine(0)+", "+addresses.get(0).getLocality()+", "+addresses.get(0).getCountryName();
                     CreateActivity.editAddress.setText(ad);
                     System.out.println("marche pas");
 
