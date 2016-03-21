@@ -75,8 +75,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      * installed Google Play services and returned to the app.
      */
 
-    // 3. bitmap creation:
-
+    //bitmap creation:
     private Bitmap getBitmap() {
 
         // fill color
@@ -93,7 +92,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         int radius = 200;
         offset=radius;
 
-        Bitmap icon = BitmapFactory.decodeResource(getResources(),R.drawable.ic_place_24dp);
+        Bitmap icon;
+        icon = BitmapFactory.decodeResource(getResources(), R.drawable.ic_place_24dp);
 
         // create empty bitmap
         Bitmap b = Bitmap.createBitmap(radius * 2, radius * 2, Bitmap.Config.ARGB_8888);
@@ -120,11 +120,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        rdArea.setText("Location: (-34, 151)");
+        rdArea.setText("Location: (151, -34)");
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        pin = new LatLng(-34, 151);
+        pin = new LatLng(151, -34);
         mMap.addMarker(new MarkerOptions().position(pin).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(pin));
 

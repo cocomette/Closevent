@@ -3,6 +3,7 @@
     package="com.closevent.closevent" >
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
@@ -67,12 +68,12 @@
         <activity
             android:name=".CodeActivity"
             android:label="Closevent"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme">
         </activity>
         <activity
             android:name=".PostActivity"
             android:label="Closevent"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme">
         </activity>
     </application>
 
