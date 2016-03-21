@@ -157,6 +157,7 @@ public class EventFragment extends Fragment implements AbsListView.OnItemClickLi
             if(selectOnglet == 0){
                 Intent intent = new Intent(this.getContext(), EventActivity.class);
                 startActivity(intent);
+                TweetFragment.event = (Event) mListView.getAdapter().getItem(position);
                 System.out.println("flux");
             }
             else if(selectOnglet == 1){
