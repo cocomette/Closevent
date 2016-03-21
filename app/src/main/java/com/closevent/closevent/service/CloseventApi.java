@@ -30,4 +30,10 @@ public interface CloseventApi {
 
     @PUT("events")
     Call<Event> createEvent(@Body Event event);
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // TWEETS
+    @PUT("medias/{event_id}")
+    Call<Tweet> createTweet(@Path("event_id") String event_id, @Body Post post);
+
 }

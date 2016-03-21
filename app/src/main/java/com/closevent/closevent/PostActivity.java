@@ -14,6 +14,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.closevent.closevent.service.Post;
+
 public class PostActivity extends AppCompatActivity implements View.OnClickListener{
 
     private EditText editPost;
@@ -60,6 +62,8 @@ public class PostActivity extends AppCompatActivity implements View.OnClickListe
 
 
                 if (completed) {
+                    Post post = new Post(editPost.getText().toString(), LoginActivity.fbToken.getUserId());
+                    post.save(TweetFragment.event.id);
                     PostActivity.this.finish();
                 }
                 return super.onOptionsItemSelected(item);
