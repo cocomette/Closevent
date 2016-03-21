@@ -2,7 +2,6 @@ package com.closevent.closevent;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -12,10 +11,9 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 
-import com.closevent.closevent.dummy.DummyContent;
+import com.closevent.closevent.service.Tweet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,24 +23,15 @@ import java.util.List;
  */
 public class TweetFragment extends Fragment implements AbsListView.OnItemClickListener {
 
+    private TweetAdapter org_thread;
+    private TweetAdapter main_thread;
 
     private List<Tweet> genererTweets(){
         List<Tweet> tweets = new ArrayList<Tweet>();
-        tweets.add(new Tweet(Color.BLACK, "Florent", "Mon premier tweet !"));
-        tweets.add(new Tweet(Color.BLUE, "Kevin", "C'est ici que ça se passe !"));
-        tweets.add(new Tweet(Color.GREEN, "Logan", "Que c'est beau..."));
-        tweets.add(new Tweet(Color.RED, "Mathieu", "Il est quelle heure ??"));
-        tweets.add(new Tweet(Color.GRAY, "Willy", "On y est presque"));
-        tweets.add(new Tweet(Color.GRAY, "Willy", "On y est presque"));
-        tweets.add(new Tweet(Color.GRAY, "Willy", "On y est presque"));
-        tweets.add(new Tweet(Color.GRAY, "Willy", "On y est presque"));
-        tweets.add(new Tweet(Color.GRAY, "Willy", "On y est presque"));
         return tweets;
     }
     private List<Tweet> genererTweets2(){
         List<Tweet> tweets = new ArrayList<Tweet>();
-        tweets.add(new Tweet(Color.BLACK, "Florent", "Mon premier tweet !"));
-        tweets.add(new Tweet(Color.BLUE, "Kevin", "C'est ici que ça se passe !"));
         return tweets;
     }
 

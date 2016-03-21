@@ -26,8 +26,8 @@ public class Event {
     public String address;
     public List<Float> position;
     public int radius;
-    public List<String> main_thread;
-    public List<String> org_thread;
+    public List<Tweet> main_thread;
+    public List<Tweet> org_thread;
 
     public Event(String name, String user_id, Date start_date, Date end_date, boolean is_private,
                  String address, List<Float> position, int radius) {

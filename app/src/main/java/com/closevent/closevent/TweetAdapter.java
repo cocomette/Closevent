@@ -9,6 +9,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.closevent.closevent.service.Tweet;
+
 import java.util.List;
 
 /**
@@ -39,9 +41,9 @@ public class TweetAdapter extends ArrayAdapter<Tweet> {
         Tweet tweet = getItem(position);
 
         //il ne reste plus qu'à remplir notre vue
-        viewHolder.pseudo.setText(tweet.getPseudo());
-        viewHolder.text.setText(tweet.getText());
-        viewHolder.avatar.setImageDrawable(new ColorDrawable(tweet.getColor()));
+        viewHolder.pseudo.setText(tweet.user.name);
+        viewHolder.text.setText(tweet.comment);
+        viewHolder.avatar.setImageDrawable(new ColorDrawable(tweet.color));
 
         return convertView;
     }
