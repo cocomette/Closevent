@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.drawable.Drawable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -92,8 +93,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         int radius = 200;
         offset=radius;
 
-        Bitmap icon;
-        icon = BitmapFactory.decodeResource(getResources(), R.drawable.ic_place_24dp);
+        Drawable drawable = getResources().getDrawable(R.drawable.ic_place_24dp);
+        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+        if( bitmap == null) {
+            System.out.println("bitmap IS NULL !!!!");
+        }else {
+            System.out.println("bitmap AINT NULL");
+        }
 
         // create empty bitmap
         Bitmap b = Bitmap.createBitmap(radius * 2, radius * 2, Bitmap.Config.ARGB_8888);
@@ -101,7 +110,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
         // draw icon
-        c.drawBitmap(icon, radius - icon.getWidth() / 2, radius - icon.getHeight() / 2, new Paint());
+        c.drawBitmap(bitmap, radius - bitmap.getWidth() / 2, radius - bitmap.getHeight() / 2, new Paint());
         c.drawCircle(radius, radius, radius, paint1);
         c.drawCircle(radius, radius, radius, paint2);
 
