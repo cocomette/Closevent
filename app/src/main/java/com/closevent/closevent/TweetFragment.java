@@ -35,7 +35,7 @@ public class TweetFragment extends Fragment implements AbsListView.OnItemClickLi
         return tweets;
     }
 
-    private EditText editPost;
+    private TextView editPost;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -105,7 +105,8 @@ public class TweetFragment extends Fragment implements AbsListView.OnItemClickLi
         }
         if(mParam1==2) {
             View view = inflater.inflate(R.layout.onglet_user, container, false);
-            editPost = (EditText) view.findViewById(R.id.editPost);
+            editPost = (TextView) view.findViewById(R.id.editPost);
+            editPost.requestFocus();
             // Set the adapter
             mListView = (AbsListView) view.findViewById(R.id.listPost);
             ((AdapterView<ListAdapter>) mListView).setAdapter(mAdapter);

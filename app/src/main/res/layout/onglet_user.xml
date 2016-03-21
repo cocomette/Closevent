@@ -7,12 +7,14 @@
     tools:context=".user_flux">
 
 
-    <EditText
+    <TextView
         android:layout_width="fill_parent"
         android:layout_height="100dp"
         android:id="@+id/editPost"
-        android:hint="Poster un message..."
-        android:layout_marginTop="10dp"/>
+        android:text="Poster un message..."
+        android:textSize="15dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="30dp"/>
 
     <ListView
 

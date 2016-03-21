@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
+import android.location.Address;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.location.Geocoder;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -30,6 +32,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.w3c.dom.Text;
+
+import java.util.List;
+import java.util.Locale;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -60,6 +65,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View view) {
                 CreateActivity.editLocation.setText("("+lat+", "+lng+") "+"500m");
+                String ad;
+                List<Address> addresses;
+                Geocoder geocoder = new Geocoder(MapsActivity.this, Locale.getDefault());
+                try {
+                    addresses = geocoder.getFromLocation(lat, lng, 1);
+                    ad = addresses.get(0).getAddressLine(0) + ", " + addresses.get(0).getLocality();
+                    CreateActivity.editAddress.setText(ad);
+                    System.out.println("marche pas");
+
+                }
+                catch (Exception e){
+                    System.out.println("exception");
+                    e.printStackTrace();
+                }
                 MapsActivity.this.finish();
             }
         });
