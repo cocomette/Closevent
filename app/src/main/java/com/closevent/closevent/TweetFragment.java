@@ -34,6 +34,7 @@ public class TweetFragment extends Fragment implements AbsListView.OnItemClickLi
     public static TweetAdapter org_thread;
     public static TweetAdapter main_thread;
     public static Event event;
+    private boolean admin;
 
     private List<Tweet> genererTweets(){
         List<Tweet> tweets = new ArrayList<Tweet>();
@@ -169,6 +170,12 @@ public class TweetFragment extends Fragment implements AbsListView.OnItemClickLi
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        if( LoginActivity.fbToken.getUserId() == TweetFragment.event.user_id ) {
+            admin = true;
+        }
+        else{
+            admin=false;
+        }
         if (getArguments() != null) {
             mParam1 = getArguments().getInt(ARG_PARAM1);
             //mParam2 = getArguments().getString(ARG_PARAM2);
@@ -194,17 +201,24 @@ public class TweetFragment extends Fragment implements AbsListView.OnItemClickLi
 
         }
         else {
-            View view = inflater.inflate(R.layout.onglet_admin, container, false);
+            if (admin) {
+                View view = inflater.inflate(R.layout.onglet_admin, container, false);
+                mListView = (AbsListView) view.findViewById(R.id.listPost);
+                ((AdapterView<ListAdapter>) mListView).setAdapter(main_thread);
 
-            // Set the adapter
-            mListView = (AbsListView) view.findViewById(R.id.listPost);
-            ((AdapterView<ListAdapter>) mListView).setAdapter(main_thread);
+                // Set OnItemClickListener so we can be notified on item clicks
+                //mListView.setOnItemClickListener(this);
+                return view;
+            } else {
+                View view = inflater.inflate(R.layout.onglet_user, container, false);
+                mListView = (AbsListView) view.findViewById(R.id.listPost);
+                ((AdapterView<ListAdapter>) mListView).setAdapter(main_thread);
 
-            // Set OnItemClickListener so we can be notified on item clicks
-            //mListView.setOnItemClickListener(this);
-            return view;
+                // Set OnItemClickListener so we can be notified on item clicks
+                //mListView.setOnItemClickListener(this);
+                return view;
+            }
         }
-
     }
 
     @Override
