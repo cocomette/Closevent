@@ -134,6 +134,7 @@ public class TweetFragment extends Fragment implements AbsListView.OnItemClickLi
             }
         });
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -1,6 +1,8 @@
 package com.closevent.closevent;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
@@ -13,6 +15,10 @@ import android.widget.TextView;
 import com.closevent.closevent.service.Event;
 import com.closevent.closevent.service.Tweet;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.List;
 
 import retrofit2.Call;
@@ -27,6 +33,18 @@ public class TweetAdapter extends ArrayAdapter<Tweet> {
         super(context, 0, tweets);
     }
 
+    Bitmap drawable_from_url(String url) throws java.net.MalformedURLException, java.io.IOException {
+        Bitmap x;
+
+        HttpURLConnection connection = (HttpURLConnection)new URL(url) .openConnection();
+        connection.setRequestProperty("User-agent","Mozilla/4.0");
+
+        connection.connect();
+        InputStream input = connection.getInputStream();
+
+        x = BitmapFactory.decodeStream(input);
+        return x;
+    }
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
@@ -49,7 +67,14 @@ public class TweetAdapter extends ArrayAdapter<Tweet> {
         //il ne reste plus qu'à remplir notre vue
         viewHolder.pseudo.setText(tweet.user.name);
         viewHolder.text.setText(tweet.comment);
-        viewHolder.avatar.setImageDrawable(new ColorDrawable(Color.BLACK));
+        
+        try {
+            Bitmap avatar = drawable_from_url(tweet.user.picture_url);
+            viewHolder.avatar.setImageBitmap(avatar);
+        } catch (IOException e) {
+            e.printStackTrace();
+            viewHolder.avatar.setImageDrawable(new ColorDrawable(Color.BLACK));
+        }
 
         return convertView;
     }

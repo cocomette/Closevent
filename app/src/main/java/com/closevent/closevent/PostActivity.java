@@ -60,7 +60,11 @@ public class PostActivity extends AppCompatActivity implements View.OnClickListe
                 }
 
                 if (completed) {
-                    Post post = new Post(editPost.getText().toString(), LoginActivity.fbToken.getUserId());
+                    String admin = "False";
+                    if( LoginActivity.fbToken.getUserId() == TweetFragment.event.user_id ) {
+                        admin = "True";
+                    }
+                    Post post = new Post(editPost.getText().toString(), LoginActivity.fbToken.getUserId(), admin);
                     post.save(TweetFragment.event.id);
                     PostActivity.this.finish();
                 }

@@ -15,11 +15,13 @@ public class Post {
     public String user_id;
     public String comment;
     public String url;
+    public String admin;
 
 
-    public Post(String comment, String user_id) {
+    public Post(String comment, String user_id, String admin) {
         this.user_id = user_id;
         this.comment = comment;
+        this.admin = admin;
         this.url = "";
     }
 
