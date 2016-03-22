@@ -112,7 +112,7 @@ public class EventAdapter extends ArrayAdapter<Event> {
             convertView.setTag(viewHolder);
         }
 
-        //getItem(position) va récupérer l'item [position] de la List<Tweet> tweets
+        //getItem(position) va récupérer l'item [position] de la List<Event>
         Event oneEvent = getItem(position);
 
         //il ne reste plus qu'à remplir notre vue

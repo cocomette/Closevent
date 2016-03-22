@@ -1,10 +1,12 @@
 package com.closevent.closevent;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +31,7 @@ import retrofit2.Response;
  * Created by Côme on 05/03/2016.
  */
 public class TweetAdapter extends ArrayAdapter<Tweet> {
+    public static View convertView;
     public TweetAdapter(Context context, List<Tweet> tweets) {
         super(context, 0, tweets);
     }
@@ -45,12 +48,61 @@ public class TweetAdapter extends ArrayAdapter<Tweet> {
         x = BitmapFactory.decodeStream(input);
         return x;
     }
+
+    class DownloadPic extends AsyncTask<String, Void, String> {
+
+        public EventActivity activity;
+        Bitmap avatar;
+
+        public DownloadPic(EventActivity a)
+        {
+            this.activity = a;
+        }
+
+        @Override
+        protected void onPreExecute() {
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            String url = params[0];
+            try {
+                if( url != "" ) {
+                    avatar = drawable_from_url(url);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                return "FAIL";
+            }
+            return "SUCCESS";
+        }
+
+        protected void onProgressUpdate(Void... arg){
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            TweetViewHolder viewHolder = (TweetViewHolder) convertView.getTag();
+            if( avatar == null ) {
+                viewHolder.avatar.setImageDrawable(new ColorDrawable(Color.BLACK));
+            } else {
+                viewHolder.avatar.setImageBitmap(avatar);
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+        }
+
+    }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
         if(convertView == null){
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.row_tweet,parent, false);
         }
+        this.convertView = convertView;
 
         TweetViewHolder viewHolder = (TweetViewHolder) convertView.getTag();
         if(viewHolder == null){
@@ -67,15 +119,8 @@ public class TweetAdapter extends ArrayAdapter<Tweet> {
         //il ne reste plus qu'à remplir notre vue
         viewHolder.pseudo.setText(tweet.user.name);
         viewHolder.text.setText(tweet.comment);
-        
-        try {
-            Bitmap avatar = drawable_from_url(tweet.user.picture_url);
-            viewHolder.avatar.setImageBitmap(avatar);
-        } catch (IOException e) {
-            e.printStackTrace();
-            viewHolder.avatar.setImageDrawable(new ColorDrawable(Color.BLACK));
-        }
-
+        DownloadPic task = new DownloadPic((EventActivity)getContext());
+        task.execute(tweet.user.picture_url);
         return convertView;
     }
 

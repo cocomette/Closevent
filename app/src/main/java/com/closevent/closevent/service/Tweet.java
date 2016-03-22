@@ -9,7 +9,7 @@ import java.util.Date;
  */
 public class Tweet {
     public int color;
-    public Date created_at;
+    public String created_at;
     public String url;
     public User user;
     public String comment;

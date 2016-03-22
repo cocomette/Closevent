@@ -31,8 +31,8 @@ import retrofit2.Response;
  */
 public class TweetFragment extends Fragment implements AbsListView.OnItemClickListener {
 
-    private TweetAdapter org_thread;
-    private TweetAdapter main_thread;
+    public static TweetAdapter org_thread;
+    public static TweetAdapter main_thread;
     public static Event event;
 
     private List<Tweet> genererTweets(){
