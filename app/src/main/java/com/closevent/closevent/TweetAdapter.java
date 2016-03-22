@@ -31,7 +31,6 @@ import retrofit2.Response;
  * Created by Côme on 05/03/2016.
  */
 public class TweetAdapter extends ArrayAdapter<Tweet> {
-    public static View convertView;
     public TweetAdapter(Context context, List<Tweet> tweets) {
         super(context, 0, tweets);
     }
@@ -51,12 +50,15 @@ public class TweetAdapter extends ArrayAdapter<Tweet> {
 
     class DownloadPic extends AsyncTask<String, Void, String> {
 
-        public EventActivity activity;
+        public Activity activity;
         Bitmap avatar;
+        TweetViewHolder viewHolder;
 
-        public DownloadPic(EventActivity a)
+
+        public DownloadPic(Activity a, TweetViewHolder viewHolder)
         {
             this.activity = a;
+            this.viewHolder = viewHolder;
         }
 
         @Override
@@ -82,7 +84,15 @@ public class TweetAdapter extends ArrayAdapter<Tweet> {
 
         @Override
         protected void onPostExecute(String result) {
-            TweetViewHolder viewHolder = (TweetViewHolder) convertView.getTag();
+            while(viewHolder == null){
+                System.out.println("WAIT view");
+                try{
+                    Thread.sleep(200);
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
             if( avatar == null ) {
                 viewHolder.avatar.setImageDrawable(new ColorDrawable(Color.BLACK));
             } else {
@@ -102,7 +112,6 @@ public class TweetAdapter extends ArrayAdapter<Tweet> {
         if(convertView == null){
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.row_tweet,parent, false);
         }
-        this.convertView = convertView;
 
         TweetViewHolder viewHolder = (TweetViewHolder) convertView.getTag();
         if(viewHolder == null){
@@ -119,7 +128,7 @@ public class TweetAdapter extends ArrayAdapter<Tweet> {
         //il ne reste plus qu'à remplir notre vue
         viewHolder.pseudo.setText(tweet.user.name);
         viewHolder.text.setText(tweet.comment);
-        DownloadPic task = new DownloadPic((EventActivity)getContext());
+        DownloadPic task = new DownloadPic((Activity)getContext(), viewHolder);
         task.execute(tweet.user.picture_url);
         return convertView;
     }
